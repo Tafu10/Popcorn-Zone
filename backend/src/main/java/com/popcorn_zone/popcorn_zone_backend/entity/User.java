@@ -1,4 +1,4 @@
-package com.popcornzone.backend.entity;
+package com.popcorn_zone.popcorn_zone_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
