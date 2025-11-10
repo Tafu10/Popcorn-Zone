@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+ * Reset Global
+ * Elimină marginile și padding-ul implicite ale browser-ului
+ * care cauzează benzile albe.
+ */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif; /* O idee bună să setăm un font de bază */
+}

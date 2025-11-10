@@ -1,0 +1,71 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #1a1a1a;
+  color: white;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+
+  /* --- Modificările pentru Sticky --- */
+  
+  /* 1. Îl face să se "lipească" de viewport */
+  position: sticky; 
+  
+  /* 2. Îi spune să se lipească de marginea de sus (la 0px) */
+  top: 0; 
+  
+  /* 3. Asigură că ocupă toată lățimea (era deja, dar e bine să confirmăm) */
+  width: 100%; 
+  
+  /* 4. Asigură că stă deasupra oricărui alt conținut de pe pagină */
+  z-index: 1000; 
+}
+
+/* ... restul fișierului .css (cum ar fi .nav-brand, .nav-menu etc.) rămâne la fel ... */
+
+.nav-brand a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Spațiu între elementele din meniu */
+}
+
+.welcome-message {
+  font-size: 1rem;
+  margin-right: 10px;
+  color: #f0f0f0;
+}
+
+.nav-button {
+  padding: 8px 16px;
+  color: white;
+  text-decoration: none;
+  border: 1px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent; /* Face butonul Logout la fel ca link-urile */
+  font-size: 1rem;
+  font-family: Arial, sans-serif; /* Asigură consistența fontului */
+}
+
+.nav-button:hover {
+  background-color: #333;
+}
+
+/* Buton special pentru Register */
+.register-btn {
+  background-color: #007bff; /* Albastru (același ca la formulare) */
+  border-color: #007bff;
+}
+
+.register-btn:hover {
+  background-color: #0056b3;
+}

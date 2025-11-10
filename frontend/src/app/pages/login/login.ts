@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core'; // 1. Importă OnInit și OnDestroy
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-
-// Importuri necesare pentru componentele Standalone
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Necesar pentru [(ngModel)]
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth';
+import { Subscription } from 'rxjs'; // 2. Importă Subscription
 
 @Component({
   selector: 'app-login',
@@ -13,52 +13,73 @@ import { FormsModule } from '@angular/forms'; // Necesar pentru [(ngModel)]
     CommonModule,
     FormsModule
   ],
-  templateUrl: './login.html', // Asigură-te că se potrivește cu 'login.html'
-  styleUrls: ['./login.css']   // Asigură-te că se potrivește cu 'login.css'
+  templateUrl: './login.html',
+  styleUrls: ['./login.css']
 })
-export class LoginComponent {
-  // Obiectul care ține datele din formular
+export class LoginComponent implements OnInit, OnDestroy { // 3. Implementează interfețele
   loginData = {
     email: '',
     password: ''
   };
-
-  // Mesaje pentru utilizator
   errorMessage: string | null = null;
-  successMessage: string | null = null; // Pentru mesajul "Logged in as..."
-
-  // URL-ul backend-ului
+  successMessage: string | null = null;
   private backendUrl = 'http://localhost:8080/api/auth/login';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  // 4. Definim o variabilă pentru a ține abonamentul
+  private authSubscription: Subscription | undefined;
 
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  // 5. ngOnInit rulează O SINGURĂ DATĂ când componenta este creată
+  ngOnInit(): void {
+    // Ne abonăm la serviciul de autentificare
+    this.authSubscription = this.authService.currentUser$.subscribe(user => {
+      // Verificăm dacă starea s-a schimbat în "delogat" (user e null)
+      if (!user) {
+        // Dacă da, curățăm mesajele
+        this.successMessage = null;
+        this.errorMessage = null;
+      }
+    });
+  }
+
+  // 6. ngOnDestroy rulează când componenta este distrusă
+  ngOnDestroy(): void {
+    // Curățăm abonamentul pentru a preveni memory leaks
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+  }
+
+  // Funcția de submit rămâne neschimbată
   onSubmit() {
     this.errorMessage = null;
     this.successMessage = null;
 
-    this.http.post<any>(this.backendUrl, this.loginData) // Așteptăm un obiect User
+    this.http.post<any>(this.backendUrl, this.loginData)
       .subscribe({
         next: (user) => {
-          // Răspuns de succes (200 OK)
           this.successMessage = `Login successful! Welcome, ${user.firstName}.`;
-          
-          // Într-o aplicație reală, ai salva token-ul utilizatorului aici
-          // console.log('User logged in:', user);
+          this.authService.login(user);
 
-          // Redirecționează către un dashboard (momentan, doar reîmprospătăm)
-          // setTimeout(() => {
-          //   this.router.navigate(['/dashboard']); // Către o viitoare pagină
-          // }, 2000);
+          setTimeout(() => {
+            // Verificăm dacă mesajul de succes încă există înainte de a naviga
+            if (this.successMessage) {
+                this.router.navigate(['/login']); 
+            }
+          }, 2000);
         },
         error: (err: HttpErrorResponse) => {
-          // Răspuns de eroare (401 Unauthorized)
           this.errorMessage = 'Invalid email or password. Please try again.';
           console.error('Error during login:', err);
         }
       });
   }
 
-  // Funcție ajutătoare pentru a naviga la înregistrare
   goToRegister() {
     this.router.navigate(['/register']);
   }

@@ -43,21 +43,55 @@
         id="password"
         name="password"
         [(ngModel)]="registerData.password"
+        #passwordInput="ngModel"
         required
-        minlength="6"
+        minlength="8"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$"
       />
+      <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="validation-error">
+        <div *ngIf="passwordInput.errors?.['required']">
+          Password is required.
+        </div>
+        <div *ngIf="passwordInput.errors?.['minlength']">
+          Password must be at least 8 characters long.
+        </div>
+        <div *ngIf="passwordInput.errors?.['pattern']">
+          Must contain one uppercase, one lowercase, and one number.
+        </div>
+      </div>
     </div>
 
-    <button type="submit" [disabled]="!registerForm.form.valid">
-      Register
-    </button>
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password:</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        [(ngModel)]="registerData.confirmPassword"
+        #confirmPasswordInput="ngModel"
+        required
+      />
+      <div *ngIf="registerData.password !== registerData.confirmPassword && (confirmPasswordInput.dirty || confirmPasswordInput.touched)" class="validation-error">
+        Passwords do not match.
+      </div>
+    </div>
 
+    <div *ngIf="passwordErrorMessage" class="message error">
+      {{ passwordErrorMessage }}
+    </div>
+    
     <div *ngIf="successMessage" class="message success">
       {{ successMessage }}
     </div>
-    <div *ngIf="errorMessage" class="message error">
+    <div *ngIf="errorMessage && !passwordErrorMessage" class="message error">
       {{ errorMessage }}
     </div>
+
+    <button 
+      type="submit" 
+      [disabled]="!registerForm.form.valid || registerData.password !== registerData.confirmPassword">
+      Register
+    </button>
 
     <div class="switch-link">
       Already have an account? <a (click)="goToLogin()">Log in</a>

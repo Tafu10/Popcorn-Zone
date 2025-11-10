@@ -1,0 +1,23 @@
+<nav class="navbar">
+  <div class="nav-brand">
+    <a routerLink="/login">PopcornZone</a>
+  </div>
+
+  <div class="nav-menu">
+
+    <ng-container *ngIf="(currentUser$ | async) as user; else loggedOutMenu">
+
+      <span class="welcome-message">Welcome, {{ user.firstName }}!</span>
+      <button (click)="onLogout()" class="nav-button">Logout</button>
+
+    </ng-container>
+
+    <ng-template #loggedOutMenu>
+
+      <a routerLink="/login" class="nav-button">Login</a>
+      <a routerLink="/register" class="nav-button register-btn">Register</a>
+
+    </ng-template>
+
+  </div>
+</nav>

@@ -97,3 +97,14 @@ button:disabled {
   cursor: pointer;
   text-decoration: underline;
 }
+
+/* Stil pentru mesajele de validare de sub input-uri */
+.validation-error {
+  color: #721c24; /* Roșu închis */
+  background-color: #f8d7da; /* Roz pal */
+  border: 1px solid #f5c6cb;
+  padding: 8px 12px;
+  margin-top: 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}

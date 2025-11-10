@@ -22,36 +22,48 @@ export class RegisterComponent {
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: '' // Am adăugat confirmPassword
   };
 
   // Mesaje pentru utilizator
   successMessage: string | null = null;
   errorMessage: string | null = null;
+  passwordErrorMessage: string | null = null; // Mesaj specific pentru parolă
 
   // URL-ul backend-ului tău
   private backendUrl = 'http://localhost:8080/api/auth/register';
 
   constructor(private http: HttpClient, private router: Router) {}
 
- // ... (păstrează importurile și începutul clasei)
-
-  // ... (păstrează registerData, successMessage, errorMessage, backendUrl, constructor)
-
   // Funcția care este apelată la trimiterea formularului
   onSubmit() {
     // Resetăm mesajele
     this.successMessage = null;
     this.errorMessage = null;
+    this.passwordErrorMessage = null; // Resetează și mesajul parolei
 
-    this.http.post(this.backendUrl, this.registerData, { responseType: 'text' })
+    // --- Verificare suplimentară ÎNAINTE de a trimite la backend ---
+    if (this.registerData.password !== this.registerData.confirmPassword) {
+      this.passwordErrorMessage = 'Passwords do not match!';
+      return; // Oprește trimiterea formularului
+    }
+    // --- Sfârșitul verificării ---
+
+    // Scoatem confirmPassword înainte de a trimite, backend-ul nu are nevoie de el
+    const dataToSend = {
+      firstName: this.registerData.firstName,
+      lastName: this.registerData.lastName,
+      email: this.registerData.email,
+      password: this.registerData.password
+    };
+
+    this.http.post(this.backendUrl, dataToSend, { responseType: 'text' })
       .subscribe({
         next: (response) => {
           // Răspuns de succes (201 CREATED)
-          // Afișăm propriul nostru mesaj în engleză
           this.successMessage = 'User registered successfully!'; 
           
-          // Opțional: Redirecționează automat la login după 2 secunde
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 2000);
@@ -59,7 +71,6 @@ export class RegisterComponent {
         error: (err: HttpErrorResponse) => {
           // Răspuns de eroare (409 CONFLICT sau altceva)
           if (err.status === 409) {
-            // Afișăm propriul nostru mesaj în engleză
             this.errorMessage = 'Email address is already in use!'; 
           } else {
             this.errorMessage = 'An error occurred during registration. Please try again.';
