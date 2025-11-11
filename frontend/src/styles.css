@@ -1,10 +1,29 @@
-/*
- * Reset Global
- * Elimină marginile și padding-ul implicite ale browser-ului
- * care cauzează benzile albe.
- */
+/* Importă un font retro-modern (Bebas Neue) de la Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* Reset Global */
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif; /* O idee bună să setăm un font de bază */
+  /* Setăm fontul de bază pentru întreaga aplicație */
+  font-family: 'Arial', sans-serif;
+}
+
+/*
+ * Clasa globală pentru efectul de text 3D Anaglif
+ * (Roșu/Albastru)
+ */
+.text-3d {
+  font-family: 'Bebas Neue', sans-serif; /* Aplicăm fontul retro */
+  color: #fff; /* Textul principal va fi alb */
+  font-size: 3.5rem; /* Mărim fontul titlului */
+  
+  /* Umbra roșie în stânga, umbra albastră în dreapta */
+  text-shadow: 
+    -2px -2px 0 #E50914, /* Roșu - Stânga-Sus */
+     2px  2px 0 #007bff;  /* Albastru - Dreapta-Jos */
+  
+  /* O bordură neagră subtilă pentru a uni literele */
+  -webkit-text-stroke: 1px black;
+  text-stroke: 1px black;
 }

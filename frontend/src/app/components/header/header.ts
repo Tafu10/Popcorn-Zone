@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth'; // Importăm serviciul (verifică calea!)
+import { AuthService } from '../../services/auth';
 import { Observable } from 'rxjs';
 
-// Importuri pentru Standalone
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -11,24 +10,38 @@ import { RouterLink } from '@angular/router';
   selector: 'app-header',
   standalone: true,
   imports: [
-    CommonModule, // Pentru *ngIf
-    RouterLink    // Pentru routerLink
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
 export class HeaderComponent {
-  // Definim un observable care va ține datele utilizatorului
   currentUser$: Observable<any>;
+  
+  // --- ADĂUGAT ---
+  // Ține minte starea meniului mobil (închis implicit)
+  isMobileMenuOpen = false;
 
   constructor(private authService: AuthService, private router: Router) {
-    // Ne "abonăm" la fluxul de date din serviciu
     this.currentUser$ = this.authService.currentUser$;
   }
 
-  // Funcția pe care o vom apela la click pe butonul Logout
+  // --- ADĂUGAT ---
+  // Funcție pentru a deschide/închide meniul mobil
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  // --- ADĂUGAT ---
+  // Funcție pentru a închide meniul când dăm click pe un link
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
+
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/login']); // Redirecționăm la login după logout
+    this.closeMobileMenu(); // Închide meniul și la logout
+    this.router.navigate(['/login']);
   }
 }

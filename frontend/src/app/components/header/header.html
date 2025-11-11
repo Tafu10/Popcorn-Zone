@@ -1,22 +1,35 @@
 <nav class="navbar">
   <div class="nav-brand">
-    <a routerLink="/login">PopcornZone</a>
+    <a routerLink="/login" (click)="closeMobileMenu()" class="logo-container">
+      <img src="assets/images/logo-popcorn.png" alt="PopcornZone Home" class="logo">
+      
+      <img src="assets/images/popcorn-burst.png" alt="pop" class="popcorn-burst">
+    </a>
   </div>
 
-  <div class="nav-menu">
+  <button 
+    class="burger-menu" 
+    [class.active]="isMobileMenuOpen" 
+    (click)="toggleMobileMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
+  <div class="nav-menu" [class.active]="isMobileMenuOpen">
+    
     <ng-container *ngIf="(currentUser$ | async) as user; else loggedOutMenu">
-
+      
       <span class="welcome-message">Welcome, {{ user.firstName }}!</span>
-      <button (click)="onLogout()" class="nav-button">Logout</button>
-
+      <button (click)="onLogout()" class="nav-button btn-logout">Logout</button>
+    
     </ng-container>
 
     <ng-template #loggedOutMenu>
-
-      <a routerLink="/login" class="nav-button">Login</a>
-      <a routerLink="/register" class="nav-button register-btn">Register</a>
-
+      
+      <a routerLink="/login" class="nav-button btn-login" (click)="closeMobileMenu()">Login</a>
+      <a routerLink="/register" class="nav-button btn-register" (click)="closeMobileMenu()">Register</a>
+    
     </ng-template>
 
   </div>

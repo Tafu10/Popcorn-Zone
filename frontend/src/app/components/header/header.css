@@ -1,3 +1,4 @@
+/* --- Stiluri de Bază (Desktop) --- */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -7,35 +8,56 @@
   color: white;
   font-family: Arial, sans-serif;
   box-sizing: border-box;
-
-  /* --- Modificările pentru Sticky --- */
-  
-  /* 1. Îl face să se "lipească" de viewport */
-  position: sticky; 
-  
-  /* 2. Îi spune să se lipească de marginea de sus (la 0px) */
-  top: 0; 
-  
-  /* 3. Asigură că ocupă toată lățimea (era deja, dar e bine să confirmăm) */
-  width: 100%; 
-  
-  /* 4. Asigură că stă deasupra oricărui alt conținut de pe pagină */
-  z-index: 1000; 
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  min-height: 80px;
 }
 
-/* ... restul fișierului .css (cum ar fi .nav-brand, .nav-menu etc.) rămâne la fel ... */
-
-.nav-brand a {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  text-decoration: none;
+/* --- LOGO-ul și ANIMAȚIA --- */
+.logo-container {
+  position: relative;
+  display: inline-block;
 }
+
+.logo {
+  height: 50px;
+  width: auto;
+  transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Starea de hover a logo-ului (animația "recul") */
+.logo-container:hover .logo {
+  /* --- MODIFICARE AICI --- */
+  transform: translateY(5px); /* Coboară 5px (în loc de -5px) */
+}
+
+/* Popcorn-ul "ascuns" */
+.popcorn-burst {
+  position: absolute;
+  width: 50px;
+  height: auto;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  pointer-events: none;
+}
+
+/* Animația la hover: facem popcorn-ul vizibil și îl "aruncăm" în sus */
+.logo-container:hover .popcorn-burst {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-20px); /* Rămâne la fel (sare în sus) */
+}
+/* --- Sfârșit Logo și Animație --- */
+
 
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 15px; /* Spațiu între elementele din meniu */
+  gap: 15px;
 }
 
 .welcome-message {
@@ -48,24 +70,104 @@
   padding: 8px 16px;
   color: white;
   text-decoration: none;
-  border: 1px solid white;
+  border: 2px solid white;
   border-radius: 4px;
   cursor: pointer;
-  background-color: transparent; /* Face butonul Logout la fel ca link-urile */
+  background-color: transparent;
   font-size: 1rem;
-  font-family: Arial, sans-serif; /* Asigură consistența fontului */
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
 }
 
-.nav-button:hover {
-  background-color: #333;
+/* --- STIL OCHELARI 3D (Desktop) --- */
+.btn-login {
+  background-color: #E50914;
+  border-color: #E50914;
+}
+.btn-login:hover {
+  background-color: #b00710;
 }
 
-/* Buton special pentru Register */
-.register-btn {
-  background-color: #007bff; /* Albastru (același ca la formulare) */
+.btn-register {
+  background-color: #007bff;
   border-color: #007bff;
 }
-
-.register-btn:hover {
+.btn-register:hover {
   background-color: #0056b3;
+}
+
+.btn-logout {
+  border-color: #aaa;
+}
+.btn-logout:hover {
+  background-color: #333;
+}
+/* --- Sfârșit Stil Ochelari 3D --- */
+
+
+/* --- Stil Buton Burger (Ascuns pe Desktop) --- */
+.burger-menu {
+  display: none; 
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.burger-menu span {
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out;
+}
+.burger-menu.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.burger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+.burger-menu.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+
+/* --- Media Query pentru Mobil (ecrane sub 768px) --- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem; 
+  }
+
+  .burger-menu {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .nav-menu.active {
+    transform: translateX(0);
+  }
+
+  .nav-button, .welcome-message {
+    font-size: 1.5rem;
+  }
 }
