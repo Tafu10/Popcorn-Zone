@@ -1,88 +1,107 @@
-/* Containerul principal cu fundalul în dungi */
-.container {
+/* Containerul 'Hero' (fundalul) */
+.hero-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* 100% din înălțime MINUS înălțimea header-ului (80px) */
-  min-height: calc(100vh - 80px); 
+  height: calc(100vh - 80px); /* Înălțime fixă */
+  overflow-y: auto; 
   font-family: Arial, sans-serif;
+  padding: 2rem;
+  box-sizing: border-box; 
+
+  /* --- MODIFICAT AICI (Revenire) --- */
   
-  /* Fundal în dungi Roșu/Alb (Stil cutie de popcorn) */
-  background-color: #fdfdfd; /* Un alb ușor murdar */
-  background-image: repeating-linear-gradient(
-    45deg,
-    #E50914, /* Roșu */
-    #E50914 20px,
-    #fdfdfd 20px,
-    #fdfdfd 40px
-  );
+  /* 1. Setează culoarea de bază pe negru (va umple spațiile goale) */
+  background-color: #000;
+
+  /* 2. Aplică gradientul 'foggy' și imaginea */
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url('/assets/images/movie-collage.png'); /* Calea către imaginea ta */
   
-  /* Ne asigurăm că formularul de login e deasupra fundalului */
-  padding: 2rem 0;
+  /* 3. Schimbă 'cover' înapoi la 'contain' */
+  background-size: contain; 
+  
+  /* 4. Adaugă la loc 'no-repeat' */
+  background-repeat: no-repeat;
+  
+  /* 5. Asigură că e centrat */
+  background-position: center center;
+  /* Am scos 'background-attachment: fixed;' */
 }
 
-/* Cardul formularului */
-.form-card {
+/* Cutia de conținut (transparentă) */
+.content-box {
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   padding: 25px;
-  background-color: #ffffff;
+  background: transparent;
   border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Umbră mai pronunțată */
-  z-index: 10; /* Stă deasupra dungilor */
+  box-shadow: none;
+  z-index: 10;
+  text-align: center;
 }
 
-/* Stilul pentru titlul h2 este acum gestionat 
- * de clasa globală '.text-3d' din 'styles.css'.
- * Putem face ajustări minore aici.
- */
+/* Titlul 3D */
 h2.text-3d {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-/* Gruparea (label + input) */
+/* --- Stilul Formularului --- */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: bold;
-  color: #555;
+  color: #c7c7c7;
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 15px;
+  border: 1px solid #777;
   border-radius: 4px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  background-color: rgba(22, 22, 22, 0.7);
+  color: white;
+  font-size: 1rem;
 }
 
-/* Butonul de trimitere (Stil Ochelari 3D) */
+/* Grupul pentru Nume (doar pe pagina de Register) */
+.name-group {
+  display: flex;
+  gap: 15px;
+}
+.name-group .form-group {
+  flex: 1;
+}
+
+
+/* Butonul de trimitere */
 button {
   width: 100%;
-  padding: 12px;
+  padding: 15px;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1.2rem; /* Mărim fontul */
+  font-size: 1.2rem;
   font-weight: bold;
-  font-family: 'Bebas Neue', sans-serif; /* Folosim fontul retro */
+  font-family: 'Bebas Neue', sans-serif;
   letter-spacing: 1px;
-  
-  /* Butonul de Login/Register va fi roșu */
   background-color: #E50914;
+  margin-top: 15px;
 }
 
 button:hover {
-  background-color: #b00710; /* Roșu mai închis */
+  background-color: #b00710;
 }
 
-/* Stil pentru butonul dezactivat */
 button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
@@ -95,22 +114,20 @@ button:disabled {
   margin-top: 15px;
   border-radius: 4px;
 }
-
 .success {
   background-color: #d4edda;
   color: #155724;
 }
-
 .error {
   background-color: #f8d7da;
   color: #721c24;
 }
 
-/* Link-ul pentru a comuta între pagini */
+/* Link-ul de comutare */
 .switch-link {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: center;
-  color: #555;
+  color: #aaa;
 }
 
 .switch-link a {
@@ -119,7 +136,7 @@ button:disabled {
   text-decoration: underline;
 }
 
-/* Stil pentru mesajele de validare de sub input-uri */
+/* Validarea parolei */
 .validation-error {
   color: #721c24; 
   background-color: #f8d7da;

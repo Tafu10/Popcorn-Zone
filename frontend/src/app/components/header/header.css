@@ -29,8 +29,8 @@
 
 /* Starea de hover a logo-ului (animația "recul") */
 .logo-container:hover .logo {
-  /* --- MODIFICARE AICI --- */
-  transform: translateY(5px); /* Coboară 5px (în loc de -5px) */
+  /* --- MODIFICAT AICI --- */
+  transform: translateY(8px); /* Coboară mai mult (8px) */
 }
 
 /* Popcorn-ul "ascuns" */
@@ -38,7 +38,8 @@
   position: absolute;
   width: 50px;
   height: auto;
-  bottom: 15px;
+  /* --- MODIFICAT AICI --- */
+  bottom: 10px; /* Începe de mai jos */
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -46,10 +47,11 @@
   pointer-events: none;
 }
 
-/* Animația la hover: facem popcorn-ul vizibil și îl "aruncăm" în sus */
+/* Animația la hover */
 .logo-container:hover .popcorn-burst {
   opacity: 1;
-  transform: translateX(-50%) translateY(-20px); /* Rămâne la fel (sare în sus) */
+  /* --- MODIFICAT AICI --- */
+  transform: translateX(-50%) translateY(-15px); /* Sare mai puțin (doar -15px) */
 }
 /* --- Sfârșit Logo și Animație --- */
 
@@ -103,7 +105,7 @@
 .btn-logout:hover {
   background-color: #333;
 }
-/* --- Sfârșit Stil Ochelari 3D --- */
+/* --- Sfârșit Stil OCHELARI 3D --- */
 
 
 /* --- Stil Buton Burger (Ascuns pe Desktop) --- */

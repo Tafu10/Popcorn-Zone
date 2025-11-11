@@ -1,100 +1,52 @@
-<div class="container">
-  <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="form-card">
-    <h2 class="text-3d">Popcorn Zone Registration</h2>
-
-    <div class="form-group">
-      <label for="firstName">First Name:</label>
-      <input
-        type="text"
-        id="firstName"
-        name="firstName"
-        [(ngModel)]="registerData.firstName"
-        required
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="lastName">Last Name:</label>
-      <input
-        type="text"
-        id="lastName"
-        name="lastName"
-        [(ngModel)]="registerData.lastName"
-        required
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        [(ngModel)]="registerData.email"
-        required
-        email
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        [(ngModel)]="registerData.password"
-        #passwordInput="ngModel"
-        required
-        minlength="8"
-        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$"
-      />
-      <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="validation-error">
-        <div *ngIf="passwordInput.errors?.['required']">
-          Password is required.
-        </div>
-        <div *ngIf="passwordInput.errors?.['minlength']">
-          Password must be at least 8 characters long.
-        </div>
-        <div *ngIf="passwordInput.errors?.['pattern']">
-          Must contain one uppercase, one lowercase, and one number.
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="confirmPassword">Confirm Password:</label>
-      <input
-        type="password"
-        id="confirmPassword"
-        name="confirmPassword"
-        [(ngModel)]="registerData.confirmPassword"
-        #confirmPasswordInput="ngModel"
-        required
-      />
-      <div *ngIf="registerData.password !== registerData.confirmPassword && (confirmPasswordInput.dirty || confirmPasswordInput.touched)" class="validation-error">
-        Passwords do not match.
-      </div>
-    </div>
-
-    <div *ngIf="passwordErrorMessage" class="message error">
-      {{ passwordErrorMessage }}
-    </div>
+<div class="hero-container">
+  <div class="content-box">
     
-    <div *ngIf="successMessage" class="message success">
-      {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage && !passwordErrorMessage" class="message error">
-      {{ errorMessage }}
-    </div>
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <h2 class="text-3d">PopcornZone Registration</h2>
 
-    <button 
-      type="submit" 
-      [disabled]="!registerForm.form.valid || registerData.password !== registerData.confirmPassword">
-      Register
-    </button>
+      <div class="name-group">
+        <div class="form-group">
+          <label for="firstName">First Name:</label>
+          <input type="text" id="firstName" name="firstName" [(ngModel)]="registerData.firstName" required />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name:</label>
+          <input type="text" id="lastName" name="lastName" [(ngModel)]="registerData.lastName" required />
+        </div>
+      </div>
 
-    <div class="switch-link">
-      Already have an account? <a (click)="goToLogin()">Log in</a>
-    </div>
-  </form>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" [(ngModel)]="registerData.email" required email />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" [(ngModel)]="registerData.password" #passwordInput="ngModel" required minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$" />
+        <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="validation-error">
+          <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
+          <div *ngIf="passwordInput.errors?.['pattern']">Must contain one uppercase, one lowercase, and one number.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="registerData.confirmPassword" #confirmPasswordInput="ngModel" required />
+        <div *ngIf="registerData.password !== registerData.confirmPassword && (confirmPasswordInput.dirty || confirmPasswordInput.touched)" class="validation-error">
+          Passwords do not match.
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!registerForm.form.valid || registerData.password !== registerData.confirmPassword">Register</button>
+
+      <div *ngIf="passwordErrorMessage" class="message error">{{ passwordErrorMessage }}</div>
+      <div *ngIf="successMessage" class="message success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage && !passwordErrorMessage" class="message error">{{ errorMessage }}</div>
+
+      <div class="switch-link">
+        Already have an account? <a (click)="goToLogin()">Log in</a>
+      </div>
+    </form>
+    
+  </div>
 </div>
