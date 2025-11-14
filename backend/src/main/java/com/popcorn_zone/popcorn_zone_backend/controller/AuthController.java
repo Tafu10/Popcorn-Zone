@@ -27,28 +27,25 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    // --- AM ADĂUGAT @Valid AICI ---
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
 
-        // 1. Verificare dacă email-ul este deja folosit
+        // Verificare mail
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            return new ResponseEntity<>("Adresa de email este deja folosită!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Adresa de email este deja folosita", HttpStatus.CONFLICT);
         }
 
-        // 2. Creare utilizator nou
-        User newUser = new User();
-        newUser.setEmail(registerRequest.getEmail());
-        newUser.setFirstName(registerRequest.getFirstName());
-        newUser.setLastName(registerRequest.getLastName());
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
+        String role = "user";
 
-        // 3. Criptarea parolei
-        newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        // Inserare
+        userRepository.saveUserNative(
+                registerRequest.getEmail(),
+                encodedPassword,
+                registerRequest.getFirstName(),
+                registerRequest.getLastName(),
+                role
+        );
 
-        newUser.setRole("user");
-
-        userRepository.save(newUser);
-
-        // Am schimbat mesajul în engleză, pentru a se potrivi cu frontend-ul
         return new ResponseEntity<>("User registered successfully!", HttpStatus.CREATED);
     }
 
@@ -63,7 +60,6 @@ public class AuthController {
 
             return ResponseEntity.ok(user);
         } else {
-            // Am schimbat mesajul în engleză, pentru a se potrivi cu frontend-ul
             return ResponseEntity.status(401).body("Invalid email or password.");
         }
     }
