@@ -1,33 +1,47 @@
 import { Injectable } from '@angular/core';
-// BehaviorSubject este un "recipient" special care ne lasă să ținem minte
-// cine e logat și să notificăm alte componente când se schimbă
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root' // Asta îl face disponibil în toată aplicația
+  providedIn: 'root'
 })
 export class AuthService {
-  // 1. Stocăm utilizatorul curent. Începe cu 'null' (nelogat).
-  private currentUserSubject = new BehaviorSubject<any>(null);
+  
+  // 1. Funcție ajutătoare: Încearcă să citească userul salvat din browser
+  private getSavedUser() {
+    const saved = localStorage.getItem('currentUser');
+    return saved ? JSON.parse(saved) : null;
+  }
 
-  // 2. Expunem starea ca un "Observable" (un flux de date)
-  // HeaderComponent se va "abona" la acest flux.
+  // 2. IMPORTANT: Inițializăm BehaviorSubject cu ce găsim în LocalStorage
+  // (Înainte era "new BehaviorSubject<any>(null)", acum verificăm memoria mai întâi)
+  private currentUserSubject = new BehaviorSubject<any>(this.getSavedUser());
+  
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() { }
 
-  // 3. Metodă pe care o va apela LoginComponent la succes
   public login(user: any) {
-    this.currentUserSubject.next(user); // Trimite noul utilizator tuturor "abonaților"
+    // 3. La login, salvăm userul în LocalStorage ("memoria permanentă")
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 
-  // 4. Metodă pentru a reseta starea la logout
   public logout() {
-    this.currentUserSubject.next(null); // Trimite 'null' (delogat)
+    // 4. La logout, îl ștergem din LocalStorage
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null); 
   }
 
-  // 5. O funcție ajutătoare pentru a verifica ușor dacă cineva e logat
   public isLoggedIn(): boolean {
     return this.currentUserSubject.value !== null;
+  }
+
+  public isAdmin(): boolean {
+    const user = this.currentUserSubject.value;
+    return user && user.role === 'admin';
+  }
+
+  public getUser() {
+    return this.currentUserSubject.value;
   }
 }

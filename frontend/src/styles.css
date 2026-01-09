@@ -1,25 +1,17 @@
-/* Importă un font retro-modern (Bebas Neue) de la Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
-/* Reset Global */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
 }
 
-/*
- * Clasa globală pentru efectul de text 3D Anaglif
- * (Roșu/Albastru)
- */
 .text-3d {
   font-family: 'Bebas Neue', sans-serif;
   color: #fff;
   font-size: 3.5rem;
   
-  /* --- MODIFICAT AICI --- */
-  /* Am mărit distanța umbrelor de la 2px la 3px */
   text-shadow: 
-    -3px -3px 0 rgba(229, 9, 20, 0.7),  /* Roșu mai transparent, la 3px */
-     3px  3px 0 rgba(0, 123, 255, 0.7); /* Albastru mai transparent, la 3px */
+    -3px -3px 0 rgba(229, 9, 20, 0.7),
+     3px  3px 0 rgba(0, 123, 255, 0.7);
 }

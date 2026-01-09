@@ -1,54 +1,55 @@
-/* Containerul 'Hero' (fundalul) */
 .hero-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px); /* Înălțime fixă */
+  /* IMPORTANT: Scădem exact înălțimea headerului (80px) */
+  height: calc(100vh - 80px);
   overflow-y: auto; 
   font-family: Arial, sans-serif;
   padding: 2rem;
   box-sizing: border-box; 
 
-  /* --- MODIFICAT AICI (Revenire) --- */
-  
-  /* 1. Setează culoarea de bază pe negru (va umple spațiile goale) */
   background-color: #000;
 
-  /* 2. Aplică gradientul 'foggy' și imaginea */
+  /* Imaginea de fundal */
   background-image: 
     linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url('/assets/images/movie-collage.png'); /* Calea către imaginea ta */
+    url('/assets/images/movie-collage.png');
   
-  /* 3. Schimbă 'cover' înapoi la 'contain' */
+  /* Folosim contain sau cover după preferință. Contain va lăsa bare negre dacă imaginea e mică. */
   background-size: contain; 
-  
-  /* 4. Adaugă la loc 'no-repeat' */
   background-repeat: no-repeat;
-  
-  /* 5. Asigură că e centrat */
   background-position: center center;
-  /* Am scos 'background-attachment: fixed;' */
 }
 
-/* Cutia de conținut (transparentă) */
 .content-box {
   width: 100%;
   max-width: 450px;
   padding: 25px;
-  background: transparent;
+  /* Fundal transparent ca să se vadă colajul */
+  background: rgba(0, 0, 0, 0.5); 
   border-radius: 8px;
-  box-shadow: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
   z-index: 10;
   text-align: center;
+  border: 1px solid #333;
 }
 
-/* Titlul 3D */
 h2.text-3d {
   text-align: center;
   margin-bottom: 30px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 2.5rem; /* Un pic mai mare */
+  font-weight: 900;
+  
+  /* --- ACELAȘI EFECT RETRO 3D --- */
+  text-shadow: 
+    -3px 2px 0px #00e5ff,  /* Cyan */
+     3px 2px 0px #E50914;  /* Roșu */
 }
 
-/* --- Stilul Formularului --- */
 .form-group {
   margin-bottom: 20px;
   text-align: left;
@@ -64,15 +65,19 @@ h2.text-3d {
 .form-group input {
   width: 100%;
   padding: 15px;
-  border: 1px solid #777;
+  border: 1px solid #555;
   border-radius: 4px;
   box-sizing: border-box;
-  background-color: rgba(22, 22, 22, 0.7);
+  background-color: rgba(22, 22, 22, 0.8);
   color: white;
   font-size: 1rem;
 }
 
-/* Grupul pentru Nume (doar pe pagina de Register) */
+.form-group input:focus {
+  border-color: #E50914;
+  outline: none;
+}
+
 .name-group {
   display: flex;
   gap: 15px;
@@ -81,8 +86,6 @@ h2.text-3d {
   flex: 1;
 }
 
-
-/* Butonul de trimitere */
 button {
   width: 100%;
   padding: 15px;
@@ -94,8 +97,9 @@ button {
   font-weight: bold;
   font-family: 'Bebas Neue', sans-serif;
   letter-spacing: 1px;
-  background-color: #E50914;
+  background-color: #E50914; /* Roșu */
   margin-top: 15px;
+  transition: background 0.3s;
 }
 
 button:hover {
@@ -103,11 +107,10 @@ button:hover {
 }
 
 button:disabled {
-  background-color: #cccccc;
+  background-color: #555;
   cursor: not-allowed;
 }
 
-/* Mesaje de eroare și succes */
 .message {
   text-align: center;
   padding: 10px;
@@ -123,7 +126,6 @@ button:disabled {
   color: #721c24;
 }
 
-/* Link-ul de comutare */
 .switch-link {
   margin-top: 30px;
   text-align: center;
@@ -131,18 +133,13 @@ button:disabled {
 }
 
 .switch-link a {
-  color: #007bff;
+  color: #007bff; /* Albastru */
   cursor: pointer;
   text-decoration: underline;
 }
 
-/* Validarea parolei */
 .validation-error {
-  color: #721c24; 
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  padding: 8px 12px;
-  margin-top: 5px;
-  border-radius: 4px;
+  color: #ff6b6b;
   font-size: 0.9em;
+  margin-top: 5px;
 }

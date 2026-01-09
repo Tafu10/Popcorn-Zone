@@ -1,0 +1,40 @@
+<div class="home-container">
+  
+  <div class="movies-section">
+    <h1 class="page-title text-3d">NOW PLAYING</h1>
+    
+    <div class="movies-grid">
+      <div *ngFor="let movie of movies" class="movie-card">
+        
+        <div class="card-image-wrapper">
+          <img [src]="movie.posterUrl ? movie.posterUrl : 'assets/images/placeholder.jpg'" alt="{{ movie.name }}">
+          
+          <div class="rating-badge">★ {{ movie.rating }}</div>
+
+          <div class="description-overlay">
+            <p>{{ movie.description }}</p>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <h3 class="movie-title">{{ movie.name }}</h3>
+          
+          <div class="movie-info">
+            <span class="genre-text">{{ movie.genre }}</span>
+            <span class="year-text">{{ movie.releaseYear }}</span>
+          </div>
+
+          <div class="duration-row">
+            <span class="clock-icon">⏱</span> {{ movie.duration }} min
+          </div>
+          
+          <button (click)="onBookTicket(movie.name)" class="btn-book">
+            GET TICKETS 🎟️
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

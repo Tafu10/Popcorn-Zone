@@ -1,0 +1,191 @@
+.main-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Header */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e50914;
+  padding-bottom: 10px;
+}
+
+.admin-badge {
+  background-color: #e50914;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Formular Adăugare */
+.add-form-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-inputs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.form-control {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.form-control.small {
+  flex: 0 0 80px; /* Input mai mic pentru An */
+}
+
+.btn-add {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* --- MOVIE CARD STYLE --- */
+.movie-card {
+  display: flex;
+  background: white;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+  gap: 20px;
+}
+
+/* 1. Poster */
+.movie-poster img {
+  width: 140px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* 2. Detalii */
+.movie-details {
+  flex: 1; /* Ocupă tot spațiul rămas */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.movie-title {
+  font-size: 1.4rem;
+  margin: 0 0 10px 0;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.movie-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.badge-age {
+  border: 1px solid #333;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 3. Program (Butoanele Portocalii) */
+.movie-schedule {
+  margin-top: auto; /* Împinge programul jos */
+}
+
+.format-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.time-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.btn-time {
+  background-color: #ff8c00; /* Portocaliu Cinema */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer; /* Chiar dacă nu fac nimic încă */
+  transition: background 0.2s;
+}
+
+.btn-time:hover {
+  background-color: #e07b00;
+}
+
+.subtitles {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+/* 4. Buton Delete (Admin) */
+.movie-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.btn-delete {
+  background-color: transparent;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.form-inputs {
+  display: flex;
+  flex-direction: column; /* Le punem unul sub altul pe blocuri */
+  gap: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-control.full-width {
+  width: 100%;
+  resize: vertical; /* Permite utilizatorului să tragă de textarea */
+}

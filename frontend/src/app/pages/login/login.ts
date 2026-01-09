@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
-import { Subscription } from 'rxjs'; // 2. Importă Subscription
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs'; // 2. Importă Subscription
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class LoginComponent implements OnInit, OnDestroy { // 3. Implementează interfețele
+export class LoginComponent implements OnInit, OnDestroy {
   loginData = {
     email: '',
     password: ''
@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit, OnDestroy { // 3. Implementează 
   successMessage: string | null = null;
   private backendUrl = 'http://localhost:8080/api/auth/login';
 
-  // 4. Definim o variabilă pentru a ține abonamentul
   private authSubscription: Subscription | undefined;
 
   constructor(
@@ -34,29 +33,22 @@ export class LoginComponent implements OnInit, OnDestroy { // 3. Implementează 
     private authService: AuthService
   ) {}
 
-  // 5. ngOnInit rulează O SINGURĂ DATĂ când componenta este creată
   ngOnInit(): void {
-    // Ne abonăm la serviciul de autentificare
     this.authSubscription = this.authService.currentUser$.subscribe(user => {
-      // Verificăm dacă starea s-a schimbat în "delogat" (user e null)
       if (!user) {
-        // Dacă da, curățăm mesajele
         this.successMessage = null;
         this.errorMessage = null;
       }
     });
   }
 
-  // 6. ngOnDestroy rulează când componenta este distrusă
   ngOnDestroy(): void {
-    // Curățăm abonamentul pentru a preveni memory leaks
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }
   }
 
-  // Funcția de submit rămâne neschimbată
-  onSubmit() {
+onSubmit() {
     this.errorMessage = null;
     this.successMessage = null;
 
@@ -64,12 +56,25 @@ export class LoginComponent implements OnInit, OnDestroy { // 3. Implementează 
       .subscribe({
         next: (user) => {
           this.successMessage = `Login successful! Welcome, ${user.firstName}.`;
+          
+          // Salvăm userul în AuthService
           this.authService.login(user);
 
+          // Așteptăm 2 secunde să vadă mesajul, apoi redirecționăm
           setTimeout(() => {
-            // Verificăm dacă mesajul de succes încă există înainte de a naviga
             if (this.successMessage) {
-                this.router.navigate(['/login']); 
+              
+              // VERIFICARE ROL ȘI REDIRECȚIONARE
+              if (user.role === 'admin') {
+                console.log('User is Admin. Redirecting to Admin Panel...');
+                this.router.navigate(['/admin-movies']);
+              } else {
+                console.log('User is Standard. Redirecting to Home...');
+                // Aici îl trimiți pe pagina principală (sau unde vrei tu)
+                // Dacă nu ai o rută '', poți pune '/admin-movies' temporar și pt useri ca să vezi că merge
+                this.router.navigate(['/']); 
+              }
+              
             }
           }, 2000);
         },

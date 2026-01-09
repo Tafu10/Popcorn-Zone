@@ -1,0 +1,82 @@
+<div class="main-container">
+  
+  <div class="header-section">
+    <h2>Movie Schedule</h2>
+    <span *ngIf="isAdmin" class="admin-badge">ADMIN MODE</span>
+  </div>
+
+  <div *ngIf="isAdmin" class="add-form-container">
+    <h3>+ Add New Movie</h3>
+    
+    <div class="form-inputs">
+      <div class="form-row">
+        <input type="text" [(ngModel)]="inputTitle" placeholder="Movie Title (e.g. Avatar)" class="form-control" style="flex: 2;">
+        <input type="number" [(ngModel)]="inputYear" placeholder="Year" class="form-control small">
+        <input type="text" [(ngModel)]="inputGenre" placeholder="Genre (e.g. Sci-Fi)" class="form-control" style="flex: 1;">
+      </div>
+
+      <div class="form-row">
+        <input type="number" [(ngModel)]="inputDuration" placeholder="Min" title="Duration in minutes" class="form-control small">
+        <input type="number" step="0.1" [(ngModel)]="inputRating" placeholder="Rating (0-10)" class="form-control small">
+        <input type="text" [(ngModel)]="inputPoster" placeholder="Poster URL Link" class="form-control" style="flex: 2;">
+      </div>
+
+      <div class="form-row">
+        <textarea [(ngModel)]="inputDescription" placeholder="Short description / Plot summary..." class="form-control full-width" rows="2"></textarea>
+      </div>
+      
+      <div class="form-row" style="justify-content: flex-end;">
+        <button (click)="onAddMovie()" class="btn-add">Save Movie</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="movies-list">
+    
+    <div *ngFor="let movie of movies" class="movie-card">
+      
+      <div class="movie-poster">
+        <img [src]="movie.posterUrl ? movie.posterUrl : 'https://via.placeholder.com/150x220?text=No+Image'" 
+             alt="{{ movie.name }}">
+      </div>
+
+      <div class="movie-details">
+        <div style="display: flex; justify-content: space-between;">
+           <h3 class="movie-title">{{ movie.name }}</h3>
+           <span style="color: gold; font-weight: bold;">★ {{ movie.rating }}</span>
+        </div>
+        
+        <div class="movie-meta">
+          <span class="badge-age">12+</span>
+          <span class="meta-text">{{ movie.genre }} | {{ movie.releaseYear }} | {{ movie.duration }} min</span>
+        </div>
+
+        <p style="font-size: 0.9rem; color: #555; margin-bottom: 10px; font-style: italic;">
+          {{ movie.description }}
+        </p>
+
+        <div class="movie-schedule">
+          <p class="format-label">Standard 2D</p>
+          <div class="time-buttons">
+            <button class="btn-time">14:30</button>
+            <button class="btn-time">17:00</button>
+            <button class="btn-time">20:15</button>
+          </div>
+          <small class="subtitles">EN-(SUB:RO)</small>
+        </div>
+      </div>
+
+      <div class="movie-actions" *ngIf="isAdmin">
+        <button (click)="onDeleteMovie(movie.id)" class="btn-delete">
+          Delete 🗑️
+        </button>
+      </div>
+
+    </div>
+
+    <div *ngIf="movies.length === 0" style="text-align: center; color: #666; margin-top: 40px;">
+      <p>No movies available.</p>
+    </div>
+
+  </div>
+</div>

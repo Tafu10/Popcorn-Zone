@@ -1,45 +1,52 @@
-/* --- Stiluri de Bază (Desktop) --- */
+/* --- Stiluri Principale Navbar --- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #1a1a1a;
+  background-color: #000000;
+  padding: 0 30px;
+  height: 80px; 
+  position: relative;
+  /* Glow roșu-albăstrui sub header */
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4), 0 4px 10px rgba(0, 229, 255, 0.2); 
   color: white;
-  font-family: Arial, sans-serif;
-  box-sizing: border-box;
-  position: sticky;
-  top: 0;
-  width: 100%;
+  font-family: 'Roboto', sans-serif;
   z-index: 1000;
-  min-height: 80px;
+  box-sizing: border-box;
 }
 
-/* --- LOGO-ul și ANIMAȚIA --- */
+/* --- LOGO ANIMAT --- */
+.nav-left {
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  height: 100%; /* Asigură înălțimea */
+}
+
 .logo-container {
   position: relative;
   display: inline-block;
+  cursor: pointer;
+  /* FIX: Îl mutăm mai jos ca să aibă loc popcorn-ul să sară fără să iasă din header/ecran */
+  margin-top: 15px; 
 }
 
 .logo {
-  height: 50px;
+  height: 50px; /* Un pic mai mic ca să încapă bine cu margin-top */
   width: auto;
   transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
-/* Starea de hover a logo-ului (animația "recul") */
 .logo-container:hover .logo {
-  /* --- MODIFICAT AICI --- */
-  transform: translateY(8px); /* Coboară mai mult (8px) */
+  transform: translateY(3px); 
 }
 
 /* Popcorn-ul "ascuns" */
 .popcorn-burst {
   position: absolute;
-  width: 50px;
+  width: 45px;
   height: auto;
-  /* --- MODIFICAT AICI --- */
-  bottom: 10px; /* Începe de mai jos */
+  bottom: 10px; /* Pornesc de mai jos */
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -47,129 +54,119 @@
   pointer-events: none;
 }
 
-/* Animația la hover */
 .logo-container:hover .popcorn-burst {
   opacity: 1;
-  /* --- MODIFICAT AICI --- */
-  transform: translateX(-50%) translateY(-15px); /* Sare mai puțin (doar -15px) */
+  /* Sare, dar nu prea sus ca să nu iasă din div */
+  transform: translateX(-50%) translateY(-22px); 
 }
-/* --- Sfârșit Logo și Animație --- */
 
+/* --- TITLU CENTRAT RETRO 3D --- */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
 
-.nav-menu {
+.site-title {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  cursor: default;
+  user-select: none;
+  
+  /* --- EFECT RETRO 3D (Cyan + Roșu) --- */
+  text-shadow: 
+    -3px 2px 0px #00e5ff,  /* Stânga: Cyan/Albastru */
+     3px 2px 0px #E50914;  /* Dreapta: Roșu Netflix */
+}
+
+/* --- DREAPTA --- */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 10;
+}
+
+.user-info, .auth-buttons {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
 .welcome-message {
-  font-size: 1rem;
-  margin-right: 10px;
-  color: #f0f0f0;
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-right: 5px;
 }
 
-.nav-button {
-  padding: 8px 16px;
+.welcome-message strong {
   color: white;
+}
+
+/* --- BUTOANE --- */
+.nav-button {
   text-decoration: none;
-  border: 2px solid white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 8px 20px;
   border-radius: 4px;
   cursor: pointer;
-  background-color: transparent;
-  font-size: 1rem;
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 1px;
+  border: none;
   transition: all 0.2s ease;
+  text-transform: uppercase;
+  font-family: Arial, sans-serif;
+  display: inline-block;
 }
 
-/* --- STIL OCHELARI 3D (Desktop) --- */
-.btn-login {
-  background-color: #E50914;
-  border-color: #E50914;
+.nav-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
-.btn-login:hover {
-  background-color: #b00710;
+
+.btn-login {
+  background-color: #E50914; 
+  color: white;
+  box-shadow: 2px 2px 0px #000; /* Mic detaliu retro */
 }
 
 .btn-register {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-.btn-register:hover {
-  background-color: #0056b3;
+  background-color: #007bff; 
+  color: white;
+  box-shadow: 2px 2px 0px #000;
 }
 
-.btn-logout {
-  border-color: #aaa;
-}
-.btn-logout:hover {
-  background-color: #333;
-}
-/* --- Sfârșit Stil OCHELARI 3D --- */
-
-
-/* --- Stil Buton Burger (Ascuns pe Desktop) --- */
-.burger-menu {
-  display: none; 
-  flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
-  height: 25px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 10;
+.btn-admin {
+  background-color: #ffc107; 
+  color: black;
+  margin-right: 5px;
 }
 
-.burger-menu span {
-  width: 100%;
-  height: 3px;
-  background-color: white;
-  border-radius: 2px;
-  transition: all 0.3s ease-in-out;
-}
-.burger-menu.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-.burger-menu.active span:nth-child(2) {
-  opacity: 0;
-}
-.burger-menu.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
+/* Buton Split (Gradient Diagonal) */
+.btn-split-logout {
+  color: white;
+  background: linear-gradient(
+    135deg, 
+    #E50914 50%, 
+    #007bff 50%
+  );
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-
-/* --- Media Query pentru Mobil (ecrane sub 768px) --- */
 @media (max-width: 768px) {
+  .site-title {
+    font-size: 1.4rem;
+    text-shadow: -2px 1px 0px #00e5ff, 2px 1px 0px #E50914; /* Mai subtil pe mobil */
+  }
+  .welcome-message {
+    display: none;
+  }
   .navbar {
-    padding: 1rem; 
-  }
-
-  .burger-menu {
-    display: flex;
-  }
-
-  .nav-menu {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    min-height: 100vh;
-    background-color: #1a1a1a;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-  }
-
-  .nav-menu.active {
-    transform: translateX(0);
-  }
-
-  .nav-button, .welcome-message {
-    font-size: 1.5rem;
+    padding: 0 10px;
   }
 }
