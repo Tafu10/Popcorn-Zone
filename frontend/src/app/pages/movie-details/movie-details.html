@@ -1,0 +1,51 @@
+<div class="details-container" *ngIf="movie">
+  
+  <div class="backdrop" [style.backgroundImage]="'url(' + (movie.posterUrl || 'assets/images/placeholder.jpg') + ')'">
+    <div class="backdrop-overlay"></div>
+  </div>
+
+  <div class="content-wrapper">
+    
+    <div class="poster-section">
+      <img [src]="movie.posterUrl || 'assets/images/placeholder.jpg'" alt="{{ movie.name }}" class="main-poster">
+    </div>
+
+    <div class="info-section">
+      <h1 class="movie-title text-3d">{{ movie.name }}</h1>
+      
+      <div class="meta-tags">
+        <span class="tag">{{ movie.genre }}</span>
+        <span class="tag">{{ movie.releaseYear }}</span>
+        <span class="tag">★ {{ movie.rating }}</span>
+        <span class="tag">⏱ {{ movie.duration }} min</span>
+      </div>
+
+      <p class="description">{{ movie.description }}</p>
+    </div>
+
+    <div class="schedule-section">
+      <h2 class="schedule-title">SELECT SHOWTIME</h2>
+      
+      <p *ngIf="projections.length === 0" style="color: #aaa;">No showtimes available.</p>
+
+      <div class="time-grid">
+        <button *ngFor="let proj of projections" 
+                class="time-btn" 
+                [class.selected]="selectedProjection === proj"
+                (click)="selectProjection(proj)">
+          
+          <div style="font-size: 1.1rem;">{{ proj.time }}</div>
+          <div style="font-size: 0.7rem; color: #aaa; margin-top: 2px;">
+            {{ proj.hall_type }} | {{ proj.city }}
+          </div>
+
+        </button>
+      </div>
+
+      <button class="btn-buy" [disabled]="!selectedProjection" (click)="onBuyTicket()">
+        BUY TICKET ->
+      </button>
+    </div>
+
+  </div>
+</div>

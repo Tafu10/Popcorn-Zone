@@ -67,7 +67,7 @@
       </div>
 
       <div class="movie-actions" *ngIf="isAdmin">
-        <button (click)="onDeleteMovie(movie.id)" class="btn-delete">
+        <button (click)="onDeleteMovie(movie.id!)" class="btn-delete">
           Delete 🗑️
         </button>
       </div>

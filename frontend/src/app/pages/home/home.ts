@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovieService, Movie } from '../../services/movie';
+import { Router } from '@angular/router'; // <--- IMPORTANT: Importul Router-ului
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,8 @@ import { MovieService, Movie } from '../../services/movie';
 export class HomeComponent implements OnInit {
   movies: Movie[] = [];
 
-  constructor(private movieService: MovieService) {}
+  // IMPORTANT: Injectează router-ul în constructor
+  constructor(private movieService: MovieService, private router: Router) {}
 
   ngOnInit() {
     this.loadMovies();
@@ -20,14 +22,14 @@ export class HomeComponent implements OnInit {
 
   loadMovies() {
     this.movieService.getAllMovies().subscribe({
-      next: (data) => {
-        this.movies = data;
-      },
-      error: (err) => console.error("Error loading movies:", err)
+      next: (data) => this.movies = data,
+      error: (err) => console.error(err)
     });
   }
 
-  onBookTicket(movieName: string) {
-    alert(`Booking ticket for: ${movieName} \n(Coming Soon!) 🎟️`);
+  // Această funcție face navigarea efectivă
+  onBookTicket(movieId: number) {
+    console.log("Navigating to movie:", movieId); // Verifică în consolă (F12) dacă apare asta
+    this.router.navigate(['/movie', movieId]);
   }
 }
