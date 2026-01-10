@@ -17,9 +17,17 @@ public class Movie {
     @Column(nullable = false)
     private String genre;
 
-    // Durata în minute (din schema ta)
     @Column(nullable = false)
     private Integer duration;
 
     private Float rating;
+
+    // Câmpurile noi care lipseau:
+    @Column(name = "release_year")
+    private Integer releaseYear;
+
+    private String description;
+
+    @Column(name = "poster_url")
+    private String posterUrl;
 }
