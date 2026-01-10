@@ -63,4 +63,8 @@ export class MovieService {
   deleteProjection(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/projections/${id}`, { withCredentials: true });
   }
+
+  getUserReservations(userId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/reservations/user/${userId}`, { withCredentials: true });
+}
 }

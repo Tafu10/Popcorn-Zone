@@ -15,7 +15,13 @@ export class SeatSelectionComponent implements OnInit {
   projectionId!: number;
   seats: any[] = [];
   selectedSeats = new Set<any>();
-  ticketPrice = 35.00; // Preț fix per bilet
+  
+  ticketsWanted: number = 1;
+  selectionStarted: boolean = false;
+  
+  // Logica de preț
+  pricePerTicket: number = 25; // Default 2D
+  projectionType: string = '2D';
 
   constructor(
     private route: ActivatedRoute,
@@ -25,59 +31,63 @@ export class SeatSelectionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Luăm ID-ul proiecției din URL
-    const id = this.route.snapshot.paramMap.get('projectionId');
-    if (id) {
-      this.projectionId = Number(id);
-      this.loadSeats();
-    }
+    this.projectionId = Number(this.route.snapshot.paramMap.get('projectionId'));
+    this.loadProjectionDetails();
+    this.loadSeats();
+  }
+
+  loadProjectionDetails() {
+    // Luăm tipul proiecției pentru a seta prețul corect pe interfață
+    this.movieService.getProjections(0).subscribe(projs => { 
+      const current = projs.find(p => p.id === this.projectionId);
+      if (current) {
+        this.projectionType = current.projection_type;
+        // Mapare prețuri
+        if (this.projectionType === 'IMAX') this.pricePerTicket = 45;
+        else if (this.projectionType === '3D') this.pricePerTicket = 35;
+        else this.pricePerTicket = 25;
+      }
+    });
   }
 
   loadSeats() {
-    this.movieService.getSeatsForProjection(this.projectionId).subscribe({
-      next: (data) => this.seats = data,
-      error: (err) => console.error("Could not load seats", err)
+    this.movieService.getSeatsForProjection(this.projectionId).subscribe(data => {
+      this.seats = data;
     });
+  }
+
+  changeTickets(amount: number) {
+    this.ticketsWanted = Math.max(1, Math.min(10, this.ticketsWanted + amount));
+  }
+
+  startSelection() {
+    this.selectionStarted = true;
   }
 
   toggleSeat(seat: any) {
     if (seat.isOccupied) return;
-
     if (this.selectedSeats.has(seat)) {
       this.selectedSeats.delete(seat);
     } else {
-      this.selectedSeats.add(seat);
+      if (this.selectedSeats.size < this.ticketsWanted) {
+        this.selectedSeats.add(seat);
+      }
     }
   }
 
   confirmBooking() {
     const user = this.authService.getUser();
-    if (!user) {
-      alert("Please login to complete the reservation.");
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    if (this.selectedSeats.size === 0) {
-      alert("Please select at least one seat.");
-      return;
-    }
-
     const payload = {
       userId: user.id,
       projectionId: this.projectionId,
       seatIds: Array.from(this.selectedSeats).map(s => s.id),
-      totalPrice: this.selectedSeats.size * this.ticketPrice
+      totalPrice: this.selectedSeats.size * this.pricePerTicket
     };
 
     this.movieService.bookSeats(payload).subscribe({
-      next: (res) => {
-        alert("Booking confirmed! Enjoy your movie.");
-        this.router.navigate(['/home']); 
-      },
-      error: (err) => {
-        console.error(err);
-        alert("Error creating reservation: " + (err.error?.message || "Internal Error"));
+      next: () => {
+        alert("Reservation successful! See you at the movies."); // Mesaj simplificat
+        this.router.navigate(['/home']);
       }
     });
   }

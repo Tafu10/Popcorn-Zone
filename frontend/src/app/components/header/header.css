@@ -1,57 +1,48 @@
-/* --- Stiluri Principale Navbar --- */
-/* --- Stiluri Principale Navbar --- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #000000;
   padding: 0 30px;
-  height: 80px; 
-  
-  /* MODIFICARE: position sticky pentru a rămâne fix sus */
-  position: sticky; 
+  height: 80px;
+  position: sticky;
   top: 0;
-  
-  /* Glow roșu-albăstrui sub header */
-  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4), 0 4px 10px rgba(0, 229, 255, 0.2); 
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4), 0 4px 10px rgba(0, 229, 255, 0.2);
   color: white;
   font-family: 'Roboto', sans-serif;
-  z-index: 1000; /* Asigură că stă peste conținutul paginii */
+  z-index: 1000;
   box-sizing: border-box;
 }
 
-/* --- LOGO ANIMAT --- */
 .nav-left {
   display: flex;
   align-items: center;
   z-index: 10;
-  height: 100%; /* Asigură înălțimea */
+  height: 100%;
 }
 
 .logo-container {
   position: relative;
   display: inline-block;
   cursor: pointer;
-  /* FIX: Îl mutăm mai jos ca să aibă loc popcorn-ul să sară fără să iasă din header/ecran */
-  margin-top: 15px; 
+  margin-top: 15px;
 }
 
 .logo {
-  height: 50px; /* Un pic mai mic ca să încapă bine cu margin-top */
+  height: 50px;
   width: auto;
   transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .logo-container:hover .logo {
-  transform: translateY(3px); 
+  transform: translateY(3px);
 }
 
-/* Popcorn-ul "ascuns" */
 .popcorn-burst {
   position: absolute;
   width: 45px;
   height: auto;
-  bottom: 10px; /* Pornesc de mai jos */
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -61,11 +52,9 @@
 
 .logo-container:hover .popcorn-burst {
   opacity: 1;
-  /* Sare, dar nu prea sus ca să nu iasă din div */
-  transform: translateX(-50%) translateY(-22px); 
+  transform: translateX(-50%) translateY(-22px);
 }
 
-/* --- TITLU CENTRAT RETRO 3D --- */
 .nav-center {
   position: absolute;
   left: 50%;
@@ -82,14 +71,11 @@
   letter-spacing: 4px;
   cursor: default;
   user-select: none;
-  
-  /* --- EFECT RETRO 3D (Cyan + Roșu) --- */
   text-shadow: 
-    -3px 2px 0px #00e5ff,  /* Stânga: Cyan/Albastru */
-     3px 2px 0px #E50914;  /* Dreapta: Roșu Netflix */
+    -3px 2px 0px #00e5ff, 
+     3px 2px 0px #E50914;
 }
 
-/* --- DREAPTA --- */
 .nav-right {
   display: flex;
   align-items: center;
@@ -103,17 +89,19 @@
   gap: 15px;
 }
 
-.welcome-message {
-  font-size: 0.9rem;
-  color: #ccc;
-  margin-right: 5px;
-}
-
-.welcome-message strong {
+/* Stil nou pentru butonul de Rezervări */
+.btn-reservations {
+  background-color: transparent;
   color: white;
+  border: 1px solid #444 !important;
+  font-size: 0.85rem !important;
 }
 
-/* --- BUTOANE --- */
+.btn-reservations:hover {
+  border-color: #E50914 !important;
+  background-color: rgba(229, 9, 20, 0.1);
+}
+
 .nav-button {
   text-decoration: none;
   font-weight: bold;
@@ -134,44 +122,26 @@
 }
 
 .btn-login {
-  background-color: #E50914; 
+  background-color: #E50914;
   color: white;
-  box-shadow: 2px 2px 0px #000; /* Mic detaliu retro */
+  box-shadow: 2px 2px 0px #000;
 }
 
 .btn-register {
-  background-color: #007bff; 
+  background-color: #007bff;
   color: white;
   box-shadow: 2px 2px 0px #000;
 }
 
 .btn-admin {
-  background-color: #ffc107; 
+  background-color: #ffc107;
   color: black;
   margin-right: 5px;
 }
 
-/* Buton Split (Gradient Diagonal) */
 .btn-split-logout {
   color: white;
-  background: linear-gradient(
-    135deg, 
-    #E50914 50%, 
-    #007bff 50%
-  );
+  background: linear-gradient(135deg, #E50914 50%, #007bff 50%);
   border: 1px solid rgba(255,255,255,0.2);
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-@media (max-width: 768px) {
-  .site-title {
-    font-size: 1.4rem;
-    text-shadow: -2px 1px 0px #00e5ff, 2px 1px 0px #E50914; /* Mai subtil pe mobil */
-  }
-  .welcome-message {
-    display: none;
-  }
-  .navbar {
-    padding: 0 10px;
-  }
 }

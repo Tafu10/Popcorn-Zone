@@ -14,7 +14,8 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   currentUser$: Observable<any>;
 
-  constructor(private authService: AuthService, private router: Router) {
+  // MODIFICARE: public pentru acces în template
+  constructor(public authService: AuthService, private router: Router) {
     this.currentUser$ = this.authService.currentUser$;
   }
 

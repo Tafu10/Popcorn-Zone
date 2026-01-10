@@ -1,33 +1,57 @@
 <div class="selection-container">
-  <div class="screen-container">
-    <div class="screen">SCREEN</div>
+  <div class="ticket-selector" *ngIf="!selectionStarted">
+    <h2>Select ticket quantity</h2>
+    <div class="counter-box">
+      <button (click)="changeTickets(-1)">-</button>
+      <span class="ticket-count">{{ ticketsWanted }}</span>
+      <button (click)="changeTickets(1)">+</button>
+    </div>
+    <p class="price-hint">Estimated: {{ ticketsWanted * pricePerTicket }} RON ({{ projectionType }})</p>
+    <button class="btn-start" (click)="startSelection()">Pick your seats</button>
   </div>
 
-  <div class="cinema-hall">
+  <div *ngIf="selectionStarted">
+    <div class="screen-container">
+      <div class="screen-line"></div>
+      <div class="screen-text">SCREEN</div>
+    </div>
+
     <div class="seats-grid">
-      <div 
-        *ngFor="let seat of seats" 
-        class="seat-box"
-        [class.occupied]="seat.isOccupied"
-        [class.selected]="selectedSeats.has(seat)"
-        (click)="toggleSeat(seat)"
-        [title]="'Row: ' + seat.row + ', Number: ' + seat.number">
-        <span class="seat-label">{{ seat.number }}</span>
+      <div *ngFor="let seat of seats" 
+           class="seat" 
+           [class.occupied]="seat.isOccupied"
+           [class.selected]="selectedSeats.has(seat)"
+           (click)="toggleSeat(seat)">
+        {{ seat.number }}
       </div>
     </div>
-  </div>
 
-  <div class="legend">
-    <div class="legend-item"><span class="box available"></span> Available</div>
-    <div class="legend-item"><span class="box occupied"></span> Occupied</div>
-    <div class="legend-item"><span class="box selected"></span> Selected</div>
-  </div>
-
-  <div class="booking-footer" *ngIf="selectedSeats.size > 0">
-    <div class="summary">
-      <p>Seats selected: <strong>{{ selectedSeats.size }}</strong></p>
-      <p>Total Price: <strong>{{ selectedSeats.size * ticketPrice }} RON</strong></p>
+    <div class="legend-container">
+      <div class="legend-item">
+        <span class="box free"></span>
+        <span class="legend-label">Free</span>
+      </div>
+      <div class="legend-item">
+        <span class="box occupied"></span>
+        <span class="legend-label">Occupied</span>
+      </div>
+      <div class="legend-item">
+        <span class="box selected"></span>
+        <span class="legend-label">Selected</span>
+      </div>
     </div>
-    <button class="confirm-btn" (click)="confirmBooking()">CONFIRM RESERVATION</button>
+
+    <div class="booking-footer">
+      <div class="stats-container">
+        <p class="stats-text">Selected: <strong>{{ selectedSeats.size }} / {{ ticketsWanted }}</strong></p>
+        <p class="price-display">Total Price: {{ selectedSeats.size * pricePerTicket }} RON</p>
+      </div>
+      
+      <button class="confirm-btn" 
+              [disabled]="selectedSeats.size !== ticketsWanted" 
+              (click)="confirmBooking()">
+        CONFIRM RESERVATION
+      </button>
+    </div>
   </div>
 </div>

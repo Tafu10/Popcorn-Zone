@@ -1,0 +1,21 @@
+<div class="reservations-container">
+  <h2>My Reservations</h2>
+  <div *ngIf="reservations.length === 0" class="no-data">
+    <p>You haven't made any reservations yet.</p>
+  </div>
+
+  <div class="res-card" *ngFor="let res of reservations">
+    <div class="res-header">
+      <span class="movie-name">{{ res.movieName }}</span>
+      <span class="res-type" [ngClass]="res.type">{{ res.type }}</span>
+    </div>
+    <div class="res-info">
+      <p><strong>Date:</strong> {{ res.date }} at {{ res.time }}</p>
+      <p><strong>Location:</strong> Hall {{ res.hall_nr }}, {{ res.city }}</p>
+      <p><strong>Seats:</strong> {{ res.seats }}</p>
+    </div>
+    <div class="res-footer">
+      <span>Total Paid: <strong>{{ res.totalPrice }} RON</strong></span>
+    </div>
+  </div>
+</div>

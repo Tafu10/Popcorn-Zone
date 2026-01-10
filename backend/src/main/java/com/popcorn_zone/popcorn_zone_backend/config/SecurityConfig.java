@@ -26,11 +26,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Permite POST/DELETE (Cerință AWJ)
+                .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        // Permitem accesul la tot ce e important ca să vedem filmele și să lucrăm ca admin
-                        .requestMatchers("/api/auth/**", "/api/movies/**", "/api/projections/**", "/api/halls/**").permitAll()
+                        // Adaugă "/api/reservations/**" în lista de permitAll pentru testare
+                        .requestMatchers("/api/auth/**", "/api/movies/**", "/api/projections/**", "/api/halls/**", "/api/reservations/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
