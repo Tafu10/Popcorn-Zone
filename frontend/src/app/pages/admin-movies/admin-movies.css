@@ -1,8 +1,9 @@
 .main-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 20px;
-  font-family: 'Roboto', sans-serif;
+  padding: 30px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: #ffffff;
 }
 
 /* Header */
@@ -11,254 +12,199 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  border-bottom: 2px solid #e50914;
-  padding-bottom: 10px;
+  border-bottom: 3px solid #e50914;
+  padding-bottom: 15px;
 }
 
 .admin-badge {
   background-color: #e50914;
   color: white;
-  padding: 5px 15px;
-  border-radius: 4px;
+  padding: 6px 18px;
+  border-radius: 20px;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
 }
 
-/* Formular Adăugare */
+/* Formular Adăugare Film */
 .add-form-container {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: #f4f7f6;
+  padding: 25px;
+  border-radius: 12px;
   margin-bottom: 40px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid #e0e0e0;
 }
 
-.form-inputs {
+.form-row {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .form-control {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  flex: 1;
-}
-
-.form-control.small {
-  flex: 0 0 80px; /* Input mai mic pentru An */
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.95rem;
 }
 
 .btn-add {
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 10px 25px;
-  border-radius: 4px;
+  padding: 12px 30px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  transition: 0.2s;
 }
 
-/* --- MOVIE CARD STYLE --- */
+.btn-add:hover { background-color: #218838; }
+
+/* Movie Card */
 .movie-card {
   display: flex;
   background: white;
-  margin-bottom: 30px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 20px;
-  gap: 20px;
+  margin-bottom: 25px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  gap: 25px;
+  border: 1px solid #eee;
 }
 
-/* 1. Poster */
 .movie-poster img {
-  width: 140px;
-  height: 210px;
+  width: 150px;
+  height: 225px;
   object-fit: cover;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 8px;
 }
 
-/* 2. Detalii */
-.movie-details {
-  flex: 1; /* Ocupă tot spațiul rămas */
+.movie-details { flex: 1; }
+
+.title-row {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .movie-title {
-  font-size: 1.4rem;
-  margin: 0 0 10px 0;
-  color: #333;
-  text-transform: uppercase;
+  font-size: 1.6rem;
+  color: #222;
+  margin: 0;
 }
 
-.movie-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.rating-star {
+  color: #ffa000;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.description-text {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.4;
   margin-bottom: 20px;
-  color: #666;
 }
 
-.badge-age {
-  border: 1px solid #333;
-  border-radius: 50%;
-  padding: 5px;
-  font-size: 0.7rem;
-  font-weight: bold;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 3. Program (Butoanele Portocalii) */
-.movie-schedule {
-  margin-top: auto; /* Împinge programul jos */
-}
-
-.format-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  font-size: 0.9rem;
-}
-
-.time-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 5px;
-}
-
-.btn-time {
-  background-color: #ff8c00; /* Portocaliu Cinema */
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer; /* Chiar dacă nu fac nimic încă */
-  transition: background 0.2s;
-}
-
-.btn-time:hover {
-  background-color: #e07b00;
-}
-
-.subtitles {
-  color: #888;
-  font-size: 0.8rem;
-}
-
-/* 4. Buton Delete (Admin) */
-.movie-actions {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.btn-delete {
-  background-color: transparent;
-  border: 1px solid #dc3545;
-  color: #dc3545;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-delete:hover {
-  background-color: #dc3545;
-  color: white;
-}
-
-.form-inputs {
-  display: flex;
-  flex-direction: column; /* Le punem unul sub altul pe blocuri */
-  gap: 15px;
-}
-
-.form-row {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
-
-.form-control.full-width {
-  width: 100%;
-  resize: vertical; /* Permite utilizatorului să tragă de textarea */
-}
+/* Projections Box */
 .admin-projections-box {
-  margin-top: 15px;
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #e9ecef;
+  background: #fdfdfd;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
 }
 
 .box-title {
-  margin-bottom: 8px;
   font-size: 0.75rem;
-  color: #6c757d;
-  letter-spacing: 0.5px;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
 .current-slots {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
 .slot-badge {
-  background: #ffffff;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  border: 1px solid #dee2e6;
+  background: #f1f3f5;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  border: 1px solid #e2e6ea;
+  transition: 0.2s;
 }
+
+.slot-time { font-weight: bold; color: #e50914; }
+
+.type-tag {
+  background: #333;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  margin-left: 4px;
+}
+
+.slot-city { color: #666; font-style: italic; }
 
 .btn-delete-slot {
   border: none;
   background: none;
-  color: #dc3545;
-  font-weight: bold;
+  color: #ff4d4d;
+  font-size: 1.2rem;
   cursor: pointer;
-  padding: 0;
+}
+
+/* Footer Actions */
+.movie-actions { display: flex; align-items: flex-start; }
+
+.btn-delete-movie {
+  background: #fff;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  font-size: 1.2rem;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-delete-movie:hover {
+  background: #ff4d4d;
+  color: white;
 }
 
 .add-slot-form {
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  border-top: 1px dashed #ddd;
+  padding-top: 12px;
 }
 
 .mini-input {
-  padding: 4px;
-  font-size: 0.8rem;
-  border: 1px solid #ced4da;
+  border: 1px solid #ddd;
   border-radius: 4px;
+  padding: 6px;
+  font-size: 0.85rem;
 }
+
+.select-hall { flex: 1; }
 
 .btn-save-slot {
-  background: #28a745;
+  background: #007bff;
   color: white;
   border: none;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-.btn-delete-movie {
-  margin: 15px;
-  background: none;
-  border: 1px solid #dc3545;
-  color: #dc3545;
-  padding: 6px 12px;
+  padding: 6px 15px;
   border-radius: 4px;
   cursor: pointer;
 }

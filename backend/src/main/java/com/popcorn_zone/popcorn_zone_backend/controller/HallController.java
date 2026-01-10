@@ -16,7 +16,13 @@ public class HallController {
 
     @GetMapping
     public List<Map<String, Object>> getAllHalls() {
-        // Returneaza id-ul si numarul salii pentru select-ul din Admin
-        return jdbcTemplate.queryForList("SELECT id, hall_nr FROM public.halls ORDER BY hall_nr ASC");
+        // JOIN între săli și locații pentru a vedea orașul în Admin
+        String sql = """
+            SELECT h.id, h.hall_nr, h.hall_type, l.city 
+            FROM public.halls h 
+            JOIN public.locations l ON h.id_location = l.id 
+            ORDER BY l.city, h.hall_nr
+        """;
+        return jdbcTemplate.queryForList(sql);
     }
 }

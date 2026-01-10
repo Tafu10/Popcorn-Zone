@@ -33,18 +33,24 @@
       </div>
 
       <div class="movie-details">
-        <div style="display: flex; justify-content: space-between;">
-           <h3 class="movie-title">{{ movie.name }}</h3>
-           <span style="color: gold; font-weight: bold;">★ {{ movie.rating }}</span>
+        <div class="title-row">
+          <h3 class="movie-title">{{ movie.name }}</h3>
+          <span class="rating-star">★ {{ movie.rating }}</span>
         </div>
         <p class="description-text">{{ movie.description }}</p>
 
         <div class="admin-projections-box">
-          <h4 class="box-title">SHOWTIMES</h4>
+          <h4 class="box-title">SHOWTIMES & HALLS</h4>
+          
           <div class="current-slots">
             <div *ngFor="let p of movie.projections" class="slot-badge">
-              <small style="color: #777;">{{ p.date }}</small> | 
-              <strong>{{ p.time }}</strong> | H{{ p.hall_nr }} ({{ p.city }})
+              <span class="slot-date">{{ p.date }}</span>
+              <span class="slot-time">{{ p.time }}</span>
+              <span class="slot-hall-info">
+                <strong>H{{ p.hall_nr }}</strong> 
+                <small class="type-tag">{{ p.hall_type }}</small>
+              </span>
+              <span class="slot-city">{{ p.city }}</span>
               <button (click)="onDeleteProjection(p.id)" class="btn-delete-slot">×</button>
             </div>
           </div>   
@@ -52,10 +58,10 @@
           <div class="add-slot-form">
             <input type="date" [(ngModel)]="newProjDate" class="mini-input">
             <input type="time" [(ngModel)]="newProjTime" class="mini-input">
-            <select [(ngModel)]="selectedHallId" class="mini-input">
+            <select [(ngModel)]="selectedHallId" class="mini-input select-hall">
               <option [ngValue]="null">Select Hall</option>
               <option *ngFor="let h of halls" [ngValue]="h.id">
-                H{{ h.hall_nr }} - {{ h.hall_type }} - {{ h.city }}
+                H{{ h.hall_nr }} ({{ h.hall_type }}) - {{ h.city }}
               </option>
             </select>
             <button (click)="onAddProjection(movie.id!)" class="btn-save-slot">Add</button>
@@ -64,7 +70,7 @@
       </div>
 
       <div class="movie-actions" *ngIf="isAdmin">
-        <button (click)="onDeleteMovie(movie.id!)" class="btn-delete-movie">Delete Movie 🗑️</button>
+        <button (click)="onDeleteMovie(movie.id!)" class="btn-delete-movie" title="Delete Movie">🗑️</button>
       </div>
     </div>
   </div>
