@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 30px;
   font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: #ffffff;
+  color: #333;
 }
 
 /* Header */
@@ -11,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   border-bottom: 3px solid #e50914;
   padding-bottom: 15px;
 }
@@ -19,48 +19,42 @@
 .admin-badge {
   background-color: #e50914;
   color: white;
-  padding: 6px 18px;
+  padding: 5px 15px;
   border-radius: 20px;
   font-weight: bold;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
+  font-size: 0.8rem;
 }
 
-/* Formular Adăugare Film */
+/* Add Movie Form */
 .add-form-container {
-  background-color: #f4f7f6;
-  padding: 25px;
-  border-radius: 12px;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 35px;
+  border: 1px solid #dee2e6;
 }
 
 .form-row {
   display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .form-control {
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #ced4da;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  border-radius: 5px;
 }
 
 .btn-add {
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 12px 30px;
-  border-radius: 6px;
+  padding: 10px 25px;
+  border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  transition: 0.2s;
 }
-
-.btn-add:hover { background-color: #218838; }
 
 /* Movie Card */
 .movie-card {
@@ -69,14 +63,14 @@
   margin-bottom: 25px;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-  gap: 25px;
+  gap: 20px;
   border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .movie-poster img {
-  width: 150px;
-  height: 225px;
+  width: 140px;
+  height: 210px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -86,125 +80,144 @@
 .title-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
 }
 
 .movie-title {
-  font-size: 1.6rem;
-  color: #222;
+  font-size: 1.5rem;
   margin: 0;
+  text-transform: uppercase;
 }
 
 .rating-star {
-  color: #ffa000;
+  color: #ff9800;
   font-weight: bold;
   font-size: 1.2rem;
 }
 
 .description-text {
-  color: #555;
-  font-size: 0.95rem;
+  color: #666;
+  font-size: 0.9rem;
   line-height: 1.4;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-/* Projections Box */
+/* Projections Box - Refined */
 .admin-projections-box {
-  background: #fdfdfd;
+  background: #fcfcfc;
   padding: 15px;
   border-radius: 10px;
-  border: 1px solid #eaeaea;
+  border: 1px solid #f0f0f0;
 }
 
 .box-title {
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: #888;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #aaa;
   margin-bottom: 12px;
-  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .current-slots {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 15px;
 }
 
 .slot-badge {
-  background: #f1f3f5;
-  padding: 6px 12px;
+  background: white;
+  padding: 6px 10px;
   border-radius: 6px;
-  font-size: 0.85rem;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.slot-badge:hover { border-color: #ccc; }
+
+.slot-content {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #e2e6ea;
-  transition: 0.2s;
+  font-size: 0.85rem;
 }
 
-.slot-time { font-weight: bold; color: #e50914; }
+.slot-time {
+  font-weight: 700;
+  color: #e50914;
+  font-size: 0.9rem;
+}
 
-.type-tag {
-  background: #333;
-  color: white;
+.slot-date { color: #888; font-size: 0.8rem; }
+.divider { color: #eee; }
+.slot-hall { font-weight: 600; color: #333; }
+
+/* Format Tags */
+.format-tag {
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: 0.7rem;
-  margin-left: 4px;
-}
-
-.slot-city { color: #666; font-style: italic; }
-
-.btn-delete-slot {
-  border: none;
-  background: none;
-  color: #ff4d4d;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* Footer Actions */
-.movie-actions { display: flex; align-items: flex-start; }
-
-.btn-delete-movie {
-  background: #fff;
-  border: 1px solid #ff4d4d;
-  color: #ff4d4d;
-  font-size: 1.2rem;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-delete-movie:hover {
-  background: #ff4d4d;
+  font-size: 0.65rem;
+  font-weight: 800;
   color: white;
 }
 
+.format-tag.IMAX { background: #000; color: #ffc107; border: 1px solid #333; }
+.format-tag.\33 D { background: #007bff; }
+.format-tag.\32 D { background: #6c757d; }
+
+.slot-city { font-style: italic; color: #999; font-size: 0.8rem; }
+
+/* Form Add Slot */
 .add-slot-form {
   display: flex;
   gap: 8px;
-  border-top: 1px dashed #ddd;
+  margin-top: 12px;
   padding-top: 12px;
+  border-top: 1px dashed #eee;
 }
 
 .mini-input {
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 6px;
-  font-size: 0.85rem;
+  padding: 5px;
+  font-size: 0.8rem;
+  outline: none;
 }
 
 .select-hall { flex: 1; }
 
-.btn-save-slot {
+.btn-add-slot {
   background: #007bff;
   color: white;
   border: none;
-  padding: 6px 15px;
+  padding: 5px 15px;
   border-radius: 4px;
+  font-weight: 600;
   cursor: pointer;
+  font-size: 0.8rem;
 }
+
+.btn-delete-slot {
+  border: none;
+  background: none;
+  color: #ff4d4d;
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.btn-delete-slot:hover { opacity: 1; }
+
+.btn-delete-movie {
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  height: fit-content;
+}
+
+.btn-delete-movie:hover { background: #dc3545; color: white; }

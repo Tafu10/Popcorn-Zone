@@ -1,0 +1,33 @@
+<div class="selection-container">
+  <div class="screen-container">
+    <div class="screen">SCREEN</div>
+  </div>
+
+  <div class="cinema-hall">
+    <div class="seats-grid">
+      <div 
+        *ngFor="let seat of seats" 
+        class="seat-box"
+        [class.occupied]="seat.isOccupied"
+        [class.selected]="selectedSeats.has(seat)"
+        (click)="toggleSeat(seat)"
+        [title]="'Row: ' + seat.row + ', Number: ' + seat.number">
+        <span class="seat-label">{{ seat.number }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="box available"></span> Available</div>
+    <div class="legend-item"><span class="box occupied"></span> Occupied</div>
+    <div class="legend-item"><span class="box selected"></span> Selected</div>
+  </div>
+
+  <div class="booking-footer" *ngIf="selectedSeats.size > 0">
+    <div class="summary">
+      <p>Seats selected: <strong>{{ selectedSeats.size }}</strong></p>
+      <p>Total Price: <strong>{{ selectedSeats.size * ticketPrice }} RON</strong></p>
+    </div>
+    <button class="confirm-btn" (click)="confirmBooking()">CONFIRM RESERVATION</button>
+  </div>
+</div>

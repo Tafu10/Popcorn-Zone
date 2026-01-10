@@ -8,12 +8,12 @@
     <h3>+ Add New Movie</h3>
     <div class="form-inputs">
       <div class="form-row">
-        <input type="text" [(ngModel)]="inputTitle" placeholder="Title" class="form-control" style="flex: 2;">
+        <input type="text" [(ngModel)]="inputTitle" placeholder="Movie Title" class="form-control" style="flex: 2;">
         <input type="number" [(ngModel)]="inputYear" placeholder="Year" class="form-control small">
         <input type="text" [(ngModel)]="inputGenre" placeholder="Genre" class="form-control" style="flex: 1;">
       </div>
       <div class="form-row">
-        <input type="number" [(ngModel)]="inputDuration" placeholder="Min" class="form-control small">
+        <input type="number" [(ngModel)]="inputDuration" placeholder="Duration (min)" class="form-control small">
         <input type="number" step="0.1" [(ngModel)]="inputRating" placeholder="Rating" class="form-control small">
         <input type="text" [(ngModel)]="inputPoster" placeholder="Poster URL" class="form-control" style="flex: 2;">
       </div>
@@ -29,7 +29,7 @@
   <div class="movies-list">
     <div *ngFor="let movie of movies" class="movie-card">
       <div class="movie-poster">
-        <img [src]="movie.posterUrl || 'https://via.placeholder.com/150x220?text=No+Image'">
+        <img [src]="movie.posterUrl || 'https://via.placeholder.com/150x220?text=No+Poster'">
       </div>
 
       <div class="movie-details">
@@ -40,37 +40,38 @@
         <p class="description-text">{{ movie.description }}</p>
 
         <div class="admin-projections-box">
-          <h4 class="box-title">SHOWTIMES & HALLS</h4>
+          <h4 class="box-title">SCHEDULE & LOCATIONS</h4>
           
           <div class="current-slots">
             <div *ngFor="let p of movie.projections" class="slot-badge">
-              <span class="slot-date">{{ p.date }}</span>
-              <span class="slot-time">{{ p.time }}</span>
-              <span class="slot-hall-info">
-                <strong>H{{ p.hall_nr }}</strong> 
-                <small class="type-tag">{{ p.hall_type }}</small>
-              </span>
-              <span class="slot-city">{{ p.city }}</span>
+              <div class="slot-content">
+                <span class="slot-date">{{ p.date }}</span>
+                <span class="slot-time">{{ p.time }}</span>
+                <span class="divider">|</span>
+                <span class="slot-hall">H{{ p.hall_nr }}</span>
+                <span class="format-tag" [ngClass]="p.projection_type">{{ p.projection_type }}</span>
+                <span class="slot-city">{{ p.city }}</span>
+              </div>
               <button (click)="onDeleteProjection(p.id)" class="btn-delete-slot">×</button>
             </div>
           </div>   
 
           <div class="add-slot-form">
-            <input type="date" [(ngModel)]="newProjDate" class="mini-input">
-            <input type="time" [(ngModel)]="newProjTime" class="mini-input">
-            <select [(ngModel)]="selectedHallId" class="mini-input select-hall">
-              <option [ngValue]="null">Select Hall</option>
+            <input type="date" [(ngModel)]="movie.draftDate" class="mini-input">
+            <input type="time" [(ngModel)]="movie.draftTime" class="mini-input">
+            <select [(ngModel)]="movie.draftHallId" class="mini-input select-hall">
+              <option [ngValue]="null">Select Hall & Location</option>
               <option *ngFor="let h of halls" [ngValue]="h.id">
                 H{{ h.hall_nr }} ({{ h.hall_type }}) - {{ h.city }}
               </option>
             </select>
-            <button (click)="onAddProjection(movie.id!)" class="btn-save-slot">Add</button>
+            <button (click)="onAddProjection(movie)" class="btn-add-slot">Add</button>
           </div>
         </div>
       </div>
 
       <div class="movie-actions" *ngIf="isAdmin">
-        <button (click)="onDeleteMovie(movie.id!)" class="btn-delete-movie" title="Delete Movie">🗑️</button>
+        <button (click)="onDeleteMovie(movie.id!)" class="btn-delete-movie">🗑️</button>
       </div>
     </div>
   </div>

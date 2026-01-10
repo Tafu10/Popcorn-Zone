@@ -12,7 +12,7 @@ import { MovieService, Movie } from '../../services/movie';
 })
 export class MovieDetailsComponent implements OnInit {
   movie: Movie | null = null;
-  projections: any[] = []; // Aici stocăm programul
+  projections: any[] = [];
   selectedProjection: any | null = null;
 
   constructor(
@@ -22,7 +22,6 @@ export class MovieDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Citim ID-ul filmului din URL (ex: /movie/1)
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const movieId = Number(id);
@@ -31,21 +30,17 @@ export class MovieDetailsComponent implements OnInit {
     }
   }
 
-loadMovie(id: number) {
+  loadMovie(id: number) {
     this.movieService.getMovieById(id).subscribe({
-      // Specificăm clar că 'data' este de tip 'Movie'
       next: (data: Movie) => this.movie = data,
-      // Specificăm că 'err' este de tip 'any'
       error: (err: any) => console.error("Movie not found", err)
     });
   }
 
   loadProjections(id: number) {
     this.movieService.getProjections(id).subscribe({
-      // Aici 'data' este o listă de orice (any[])
       next: (data: any[]) => {
         this.projections = data;
-        console.log("Projections loaded:", data);
       },
       error: (err: any) => console.error("Error loading projections", err)
     });
@@ -56,8 +51,9 @@ loadMovie(id: number) {
   }
 
   onBuyTicket() {
-    if (this.selectedProjection) {
-      alert(`Booking started for ${this.selectedProjection.time} at ${this.selectedProjection.cinema_name}!`);
+    if (this.selectedProjection && this.selectedProjection.id) {
+      // Navigăm către selecția locurilor transmițând ID-ul proiecției
+      this.router.navigate(['/seat-selection', this.selectedProjection.id]);
     } else {
       alert("Please select a showtime first!");
     }

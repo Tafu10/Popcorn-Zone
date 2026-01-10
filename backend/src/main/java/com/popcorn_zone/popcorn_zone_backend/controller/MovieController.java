@@ -17,15 +17,26 @@ public class MovieController {
 
     @GetMapping
     public List<Map<String, Object>> getAllMovies() {
-        // Citim coloanele si le dam alias-uri sa se potriveasca cu interfata Movie din TS
         String sql = "SELECT id, name, genre, duration, release_year AS \"releaseYear\", " +
                 "description, poster_url AS \"posterUrl\", rating FROM public.movies ORDER BY id DESC";
         return jdbcTemplate.queryForList(sql);
     }
 
+    // ACEASTA ESTE METODA CARE LIPSEA:
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getMovieById(@PathVariable Integer id) {
+        try {
+            String sql = "SELECT id, name, genre, duration, release_year AS \"releaseYear\", " +
+                    "description, poster_url AS \"posterUrl\", rating FROM public.movies WHERE id = ?";
+            Map<String, Object> movie = jdbcTemplate.queryForMap(sql, id);
+            return ResponseEntity.ok(movie);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Movie not found");
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> addMovie(@RequestBody Map<String, Object> movie) {
-        // Folosim numele campurilor din payload-ul tau din Angular
         String sql = "INSERT INTO public.movies (name, genre, duration, release_year, description, poster_url, rating) VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 movie.get("name"),
@@ -36,14 +47,13 @@ public class MovieController {
                 movie.get("posterUrl"),
                 movie.get("rating")
         );
-        return ResponseEntity.ok().body("{\"message\": \"Adaugat!\"}");
+        return ResponseEntity.ok().body("{\"message\": \"Movie added!\"}");
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Integer id) {
-        // IMPORTANT: Stergem intai proiectiile ca sa nu avem eroare de Foreign Key
         jdbcTemplate.update("DELETE FROM public.projections WHERE id_movie = ?", id);
         jdbcTemplate.update("DELETE FROM public.movies WHERE id = ?", id);
-        return ResponseEntity.ok().body("{\"message\": \"Sters!\"}");
+        return ResponseEntity.ok().body("{\"message\": \"Movie deleted!\"}");
     }
 }

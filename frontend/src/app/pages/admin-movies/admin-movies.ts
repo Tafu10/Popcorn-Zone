@@ -12,17 +12,13 @@ import { AuthService } from '../../services/auth';
   styleUrls: ['./admin-movies.css']
 })
 export class AdminMoviesComponent implements OnInit {
-  movies: Movie[] = [];
+  movies: any[] = []; // Folosim any pentru a permite proprietățile draft
   halls: any[] = [];
   isAdmin = false;
   
+  // Formular adăugare film nou (global)
   inputTitle = ''; inputYear = 2026; inputGenre = ''; inputPoster = '';
   inputDuration = 120; inputRating = 7.0; inputDescription = ''; 
-
-  newProjDate = ''; 
-  newProjTime = ''; 
-  newProjType = 'Standard 2D';
-  selectedHallId: number | null = null;
 
   constructor(private movieService: MovieService, private authService: AuthService) {}
 
@@ -44,77 +40,84 @@ export class AdminMoviesComponent implements OnInit {
   loadMovies() {
     this.movieService.getAllMovies().subscribe({
       next: (data: Movie[]) => {
-        this.movies = data;
+        // Mapăm filmele și le adăugăm câmpuri locale pentru input-uri
+        this.movies = data.map(movie => ({
+          ...movie,
+          draftDate: '',
+          draftTime: '',
+          draftHallId: null
+        }));
+
+        // Încărcăm proiecțiile pentru fiecare film
         this.movies.forEach(movie => {
           if (movie.id) {
-            this.movieService.getProjections(movie.id).subscribe(projs => movie.projections = projs);
+            this.movieService.getProjections(movie.id).subscribe(projs => {
+              movie.projections = projs;
+            });
           }
         });
       },
-      error: (err: any) => console.error(err)
+      error: (err: any) => console.error("Error loading movies:", err)
     });
   }
 
   onAddMovie() {
-    const payload = { name: this.inputTitle, releaseYear: this.inputYear, genre: this.inputGenre, duration: this.inputDuration, rating: this.inputRating, description: this.inputDescription, posterUrl: this.inputPoster };
+    const payload = { 
+      name: this.inputTitle, 
+      releaseYear: this.inputYear, 
+      genre: this.inputGenre, 
+      duration: this.inputDuration, 
+      rating: this.inputRating, 
+      description: this.inputDescription, 
+      posterUrl: this.inputPoster 
+    };
+
     this.movieService.addMovie(payload).subscribe(() => {
       this.loadMovies();
       this.resetMovieForm();
     });
   }
 
-// În admin-movies.ts, actualizează metoda onAddProjection:
+  onAddProjection(movie: any) {
+    if (!movie.draftDate || !movie.draftTime || !movie.draftHallId) {
+      alert("Please select Date, Time, and Hall for this specific movie!");
+      return;
+    }
 
-onAddProjection(movieId: number) {
-  if (!this.newProjDate || !this.newProjTime || !this.selectedHallId) {
-    alert("Te rugăm să alegi Data, Ora și Sala!");
-    return;
+    const payload = { 
+      movieId: movie.id, 
+      hallId: movie.draftHallId, 
+      date: movie.draftDate, 
+      time: movie.draftTime 
+    };
+
+    this.movieService.addProjection(payload).subscribe({
+      next: () => { 
+        alert("Showtime added successfully!"); 
+        this.loadMovies(); 
+      },
+      error: (err) => {
+        console.error("Conflict:", err);
+        const errorMessage = (typeof err.error === 'string') ? err.error : "Conflict: The hall is occupied!";
+        alert(errorMessage); 
+      }
+    });
   }
 
-  // Debug: vedem exact ce trimitem in consola browserului (F12 -> Console)
-  const payload = { 
-    movieId, 
-    hallId: this.selectedHallId, 
-    date: this.newProjDate, 
-    time: this.newProjTime, 
-    projection_type: this.newProjType 
-  };
-  console.log("Trimitere payload proiectie:", payload);
-
-  this.movieService.addProjection(payload).subscribe({
-    next: () => { 
-      alert("Proiecție adăugată cu succes!"); 
-      this.loadMovies(); 
-      // Resetare campuri
-      this.newProjDate = ''; 
-      this.newProjTime = ''; 
-      this.selectedHallId = null;
-    },
-    error: (err) => {
-      console.error("Eroare detaliata:", err);
-      // Afisam mesajul primit de la Java (Conflict sau Eroare SQL)
-      const errorText = (typeof err.error === 'string') ? err.error : "Eroare necunoscută la server!";
-      alert(errorText); 
-    }
-  });
-}
-
   onDeleteProjection(id: number) {
-    if(confirm("Ștergi proiecția?")) this.movieService.deleteProjection(id).subscribe(() => this.loadMovies());
+    if(confirm("Are you sure you want to delete this showtime?")) {
+      this.movieService.deleteProjection(id).subscribe(() => this.loadMovies());
+    }
   }
 
   onDeleteMovie(id: number) {
-    if(confirm("Ștergi filmul?")) this.movieService.deleteMovie(id).subscribe(() => this.loadMovies());
+    if(confirm("WARNING: Deleting this movie will remove all associated showtimes. Continue?")) {
+      this.movieService.deleteMovie(id).subscribe(() => this.loadMovies());
+    }
   }
 
   private resetMovieForm() {
     this.inputTitle = ''; this.inputGenre = ''; this.inputPoster = '';
     this.inputDescription = ''; this.inputYear = 2026; 
-  }
-
-  private resetProjForm() {
-    this.newProjDate = ''; 
-    this.newProjTime = ''; 
-    this.selectedHallId = null;
   }
 }

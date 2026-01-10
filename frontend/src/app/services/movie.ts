@@ -11,49 +11,56 @@ export interface Movie {
   description: string;
   posterUrl: string;
   rating: number;
-  projections?: any[]; // Stocăm programul aici după încărcare
+  projections?: any[];
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  private apiUrl = 'http://localhost:8080/api/movies';
-  private projectionsUrl = 'http://localhost:8080/api/projections';
-  private hallsUrl = 'http://localhost:8080/api/halls';
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
   getAllMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.apiUrl, { withCredentials: true });
+    return this.http.get<Movie[]>(`${this.apiUrl}/movies`);
   }
 
   getMovieById(id: number): Observable<Movie> {
-    return this.http.get<Movie>(`${this.apiUrl}/${id}`, { withCredentials: true });
+    return this.http.get<Movie>(`${this.apiUrl}/movies/${id}`);
   }
 
   getProjections(movieId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.projectionsUrl}/${movieId}`, { withCredentials: true });
+    return this.http.get<any[]>(`${this.apiUrl}/projections/${movieId}`);
   }
 
-  deleteMovie(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { withCredentials: true });
+  // Metode noi pentru Rezervări
+  getSeatsForProjection(projectionId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/reservations/seats/${projectionId}`, { withCredentials: true });
   }
 
-  addMovie(movie: any): Observable<Movie> {
-    return this.http.post<Movie>(this.apiUrl, movie, { withCredentials: true });
+  bookSeats(payload: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reservations`, payload, { withCredentials: true });
   }
 
-  // GESTIUNE PROIECȚII
+  // Admin Methods
+  addMovie(movie: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/movies`, movie, { withCredentials: true });
+  }
+
+  deleteMovie(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/movies/${id}`, { withCredentials: true });
+  }
+
   getAllHalls(): Observable<any[]> {
-    return this.http.get<any[]>(this.hallsUrl, { withCredentials: true });
+    return this.http.get<any[]>(`${this.apiUrl}/halls`, { withCredentials: true });
   }
 
   addProjection(payload: any): Observable<any> {
-    return this.http.post(this.projectionsUrl, payload, { withCredentials: true });
+    return this.http.post(`${this.apiUrl}/projections`, payload, { withCredentials: true });
   }
 
   deleteProjection(id: number): Observable<any> {
-    return this.http.delete(`${this.projectionsUrl}/${id}`, { withCredentials: true });
+    return this.http.delete(`${this.apiUrl}/projections/${id}`, { withCredentials: true });
   }
 }
