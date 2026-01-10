@@ -189,3 +189,76 @@
   width: 100%;
   resize: vertical; /* Permite utilizatorului să tragă de textarea */
 }
+.admin-projections-box {
+  margin-top: 15px;
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.box-title {
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  color: #6c757d;
+  letter-spacing: 0.5px;
+}
+
+.current-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.slot-badge {
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  border: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-delete-slot {
+  border: none;
+  background: none;
+  color: #dc3545;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+}
+
+.add-slot-form {
+  display: flex;
+  gap: 6px;
+}
+
+.mini-input {
+  padding: 4px;
+  font-size: 0.8rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.btn-save-slot {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-delete-movie {
+  margin: 15px;
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}

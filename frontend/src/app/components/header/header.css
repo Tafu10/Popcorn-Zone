@@ -1,4 +1,5 @@
 /* --- Stiluri Principale Navbar --- */
+/* --- Stiluri Principale Navbar --- */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -6,12 +7,16 @@
   background-color: #000000;
   padding: 0 30px;
   height: 80px; 
-  position: relative;
+  
+  /* MODIFICARE: position sticky pentru a rămâne fix sus */
+  position: sticky; 
+  top: 0;
+  
   /* Glow roșu-albăstrui sub header */
   box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4), 0 4px 10px rgba(0, 229, 255, 0.2); 
   color: white;
   font-family: 'Roboto', sans-serif;
-  z-index: 1000;
+  z-index: 1000; /* Asigură că stă peste conținutul paginii */
   box-sizing: border-box;
 }
 
