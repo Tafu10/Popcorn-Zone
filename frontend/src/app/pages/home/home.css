@@ -3,7 +3,6 @@
  * @version 12 Ianuarie 2026
  * Stiluri pentru pagina Homesi detalii film stilizate.
  */
-
 .home-container {
     background-color: transparent;
     min-height: 100vh;
@@ -19,6 +18,7 @@
 }
 
 .hero-title { font-size: 3.5rem; margin: 0; }
+
 .text-3d {
     text-transform: uppercase;
     font-weight: 900;
@@ -144,3 +144,68 @@
     border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s;
 }
 .btn-book:hover { background: #b00710; }
+
+.card-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+}
+
+.card-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.rating-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffc107;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    z-index: 2;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.description-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: 0.4s;
+    z-index: 1;
+}
+
+.description-overlay p {
+    color: white;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0;
+    transform: translateY(20px);
+    transition: 0.4s;
+}
+
+.movie-card:hover .description-overlay {
+    opacity: 1;
+}
+
+.movie-card:hover .description-overlay p {
+    transform: translateY(0);
+}
+
+.movie-card:hover .card-image-wrapper img {
+    transform: scale(1.1);
+}
