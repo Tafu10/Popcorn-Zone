@@ -67,4 +67,7 @@ export class MovieService {
   getUserReservations(userId: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.apiUrl}/reservations/user/${userId}`, { withCredentials: true });
 }
+getProjectionById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/projections/single/${id}`);
+}
 }

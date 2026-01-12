@@ -30,6 +30,18 @@ public class ProjectionController {
         return jdbcTemplate.queryForList(sql, movieId);
     }
 
+    @GetMapping("/single/{id}")
+    public Map<String, Object> getProjectionById(@PathVariable int id) {
+        String sql = """
+        SELECT p.id, p.projection_type, h.hall_nr, l.city 
+        FROM public.projections p
+        JOIN public.halls h ON p.id_hall = h.id
+        JOIN public.locations l ON h.id_location = l.id
+        WHERE p.id = ?
+    """;
+        return jdbcTemplate.queryForMap(sql, id);
+    }
+
     @PostMapping
     public ResponseEntity<?> addProjection(@RequestBody Map<String, Object> payload) {
         try {

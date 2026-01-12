@@ -64,7 +64,7 @@ public class ReservationController {
             Integer locationId = (Integer) projInfo.get("id_location");
 
             // 2. LOGICĂ PREȚ DINAMIC
-            double pricePerTicket = switch (type.toUpperCase()) {
+            double pricePerTicket = switch (type.trim().toUpperCase()) {
                 case "IMAX" -> 45.0;
                 case "3D" -> 35.0;
                 default -> 25.0; // Standard 2D

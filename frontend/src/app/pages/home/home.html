@@ -1,16 +1,41 @@
 <div class="home-container">
-  
-  <div class="movies-section">
-    <h1 class="page-title text-3d">NOW PLAYING</h1>
-    
-    <div class="movies-grid">
-      <div *ngFor="let movie of movies" class="movie-card">
-        
-        <div class="card-image-wrapper">
-          <img [src]="movie.posterUrl ? movie.posterUrl : 'assets/images/placeholder.jpg'" alt="{{ movie.name }}">
-          
-          <div class="rating-badge">★ {{ movie.rating }}</div>
+  <div class="hero">
+    <div class="background-collage">
+      <div class="collage-grid">
+        <img *ngFor="let url of collagePosters" [src]="url">
+      </div>
+      <div class="collage-overlay"></div>
+    </div>
 
+    <div class="hero-content">
+      <h1 class="hero-title text-3d">Experience Cinema Like Never Before</h1>
+      <p class="hero-subtitle">Book your favorite movies in the best halls across the country.</p>
+    </div>
+  </div>
+
+  <div class="filter-controls">
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search for a movie..." class="search-input">
+    </div>
+    <div class="sort-box">
+      <label>Sort by: </label>
+      <select [(ngModel)]="sortKey" class="sort-select">
+        <option value="rating">Highest Rating</option>
+        <option value="name">Alphabetical (A-Z)</option>
+      </select>
+    </div>
+  </div>
+
+  <section class="movies-section">
+    <div class="section-title-container">
+      <h2 class="page-title text-3d">NOW PLAYING</h2>
+    </div>
+
+    <div class="movies-grid">
+      <div class="movie-card" *ngFor="let movie of filteredMovies" [routerLink]="['/movie', movie.id]">
+        <div class="card-image-wrapper">
+          <img [src]="movie.posterUrl || 'assets/images/placeholder.jpg'" alt="{{ movie.name }}">
+          <div class="rating-badge">★ {{ movie.rating }}</div>
           <div class="description-overlay">
             <p>{{ movie.description }}</p>
           </div>
@@ -18,23 +43,18 @@
 
         <div class="card-content">
           <h3 class="movie-title">{{ movie.name }}</h3>
-          
           <div class="movie-info">
             <span class="genre-text">{{ movie.genre }}</span>
-            <span class="year-text">{{ movie.releaseYear }}</span>
+            <span class="year-text">• {{ movie.releaseYear }}</span>
           </div>
-
-          <div class="duration-row">
-            <span class="clock-icon">⏱</span> {{ movie.duration }} min
-          </div>
-          
-            <button (click)="onBookTicket(movie.id!)" class="btn-book">
-            GET TICKETS
-            </button>
+          <div class="duration-row">⏱ {{ movie.duration }} min</div>
+          <button class="btn-book">BUY TICKET</button>
         </div>
+      </div>
 
+      <div *ngIf="filteredMovies.length === 0" class="no-results">
+        No movies found matching "{{ searchTerm }}"
       </div>
     </div>
-  </div>
-
+  </section>
 </div>

@@ -1,6 +1,6 @@
 <nav class="navbar">
   <div class="nav-left">
-    <a routerLink="/" class="logo-container">
+    <a routerLink="/" class="logo-container" (click)="closeMenu()">
       <img src="assets/images/logo-popcorn.png" alt="PopcornZone" class="logo">
       <img src="assets/images/popcorn-burst.png" alt="Pop" class="popcorn-burst">
     </a>
@@ -10,27 +10,35 @@
     <h1 class="site-title">POPCORN ZONE</h1>
   </div>
 
-  <div class="nav-right">
+  <div class="burger-icon" (click)="toggleMenu()" [class.open]="isMenuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="nav-right" [class.active]="isMenuOpen">
     <ng-container *ngIf="(currentUser$ | async) as user; else guestMenu">
       <div class="user-info">
-        <a routerLink="/my-reservations" class="nav-button btn-reservations">
+        <a *ngIf="user.role === 'admin'" 
+           routerLink="/admin-movies" 
+           class="nav-button btn-admin" 
+           (click)="closeMenu()">Admin Panel</a>
+
+        <a *ngIf="user.role === 'user'" 
+           routerLink="/my-reservations" 
+           class="nav-button btn-reservations" 
+           (click)="closeMenu()">
            {{ user.firstName }}'s Reservations
         </a>
-
-        <a *ngIf="user.role === 'admin'" routerLink="/admin-movies" class="nav-button btn-admin">
-          Admin
-        </a>
-
-        <button (click)="onLogout()" class="nav-button btn-split-logout">
-          LOGOUT
-        </button>
+        
+        <button (click)="onLogout()" class="nav-button btn-split-logout">LOGOUT</button>
       </div>
     </ng-container>
 
     <ng-template #guestMenu>
       <div class="auth-buttons">
-        <a routerLink="/login" class="nav-button btn-login">LOGIN</a>
-        <a routerLink="/register" class="nav-button btn-register">REGISTER</a>
+        <a routerLink="/login" class="nav-button btn-login" (click)="closeMenu()">LOGIN</a>
+        <a routerLink="/register" class="nav-button btn-register" (click)="closeMenu()">REGISTER</a>
       </div>
     </ng-template>
   </div>

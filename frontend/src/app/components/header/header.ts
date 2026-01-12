@@ -13,14 +13,23 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
   currentUser$: Observable<any>;
+  isMenuOpen = false; // Starea meniului burger
 
-  // MODIFICARE: public pentru acces în template
   constructor(public authService: AuthService, private router: Router) {
     this.currentUser$ = this.authService.currentUser$;
   }
 
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
   onLogout() {
     this.authService.logout();
+    this.closeMenu();
     this.router.navigate(['/login']);
   }
 }

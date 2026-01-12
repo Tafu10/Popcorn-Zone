@@ -36,19 +36,34 @@ export class SeatSelectionComponent implements OnInit {
     this.loadSeats();
   }
 
-  loadProjectionDetails() {
-    // Luăm tipul proiecției pentru a seta prețul corect pe interfață
-    this.movieService.getProjections(0).subscribe(projs => { 
-      const current = projs.find(p => p.id === this.projectionId);
+loadProjectionDetails() {
+  // Apelăm o metodă nouă care aduce datele DOAR pentru proiecția curentă
+  this.movieService.getProjectionById(this.projectionId).subscribe({
+    next: (current) => {
       if (current) {
-        this.projectionType = current.projection_type;
-        // Mapare prețuri
-        if (this.projectionType === 'IMAX') this.pricePerTicket = 45;
-        else if (this.projectionType === '3D') this.pricePerTicket = 35;
-        else this.pricePerTicket = 25;
+        // JdbcTemplate din Backend returnează adesea cheile cu snake_case (projection_type)
+        this.projectionType = current.projection_type || current.projectionType || '2D'; 
+        
+        console.log('Tip proiecție detectat:', this.projectionType);
+
+        // Aplicăm logica de preț în funcție de tipul real detectat
+        if (this.projectionType.trim().toUpperCase() === 'IMAX') {
+          this.pricePerTicket = 45;
+        } else if (this.projectionType.trim().toUpperCase() === '3D') {
+          this.pricePerTicket = 35;
+        } else {
+          this.pricePerTicket = 25;
+        }
+      } else {
+        console.error('Eroare: Datele proiecției nu au putut fi găsite!');
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Eroare la comunicarea cu serverul:', err);
+      // În caz de eroare, rămâne pe prețul default de 25
+    }
+  });
+}
 
   loadSeats() {
     this.movieService.getSeatsForProjection(this.projectionId).subscribe(data => {

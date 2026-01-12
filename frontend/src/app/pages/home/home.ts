@@ -1,35 +1,52 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovieService, Movie } from '../../services/movie';
-import { Router } from '@angular/router'; // <--- IMPORTANT: Importul Router-ului
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class HomeComponent implements OnInit {
   movies: Movie[] = [];
+  collagePosters: string[] = [];
+  searchTerm: string = '';
+  sortKey: string = 'rating';
 
-  // IMPORTANT: Injectează router-ul în constructor
-  constructor(private movieService: MovieService, private router: Router) {}
+  constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.loadMovies();
-  }
-
-  loadMovies() {
-    this.movieService.getAllMovies().subscribe({
-      next: (data) => this.movies = data,
-      error: (err) => console.error(err)
+    this.movieService.getAllMovies().subscribe(data => {
+      this.movies = data;
+      
+      // Extragem URL-urile posterelor valide
+      let posters = data.map(m => m.posterUrl).filter(url => !!url);
+      
+      // LOGICĂ UMPLERE COLAJ: Dacă sunt puține filme, duplicăm lista până avem minim 20 de imagini
+      if (posters.length > 0) {
+        while (posters.length < 20) {
+          posters = [...posters, ...posters];
+        }
+      }
+      
+      // Amestecăm posterele și tăiem primele 25 pentru un aspect uniform
+      this.collagePosters = posters.sort(() => 0.5 - Math.random()).slice(0, 25);
     });
   }
 
-  // Această funcție face navigarea efectivă
-  onBookTicket(movieId: number) {
-    console.log("Navigating to movie:", movieId); // Verifică în consolă (F12) dacă apare asta
-    this.router.navigate(['/movie', movieId]);
+  get filteredMovies() {
+    return this.movies
+      .filter(m => 
+        m.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        m.genre.toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (this.sortKey === 'rating') return b.rating - a.rating;
+        return a.name.localeCompare(b.name);
+      });
   }
 }

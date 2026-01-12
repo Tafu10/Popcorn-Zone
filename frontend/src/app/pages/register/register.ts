@@ -1,74 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MovieService } from '../../services/movie';
 
 @Component({
   selector: 'app-register',
   standalone: true, 
-  imports: [
-    CommonModule, 
-    FormsModule   
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './register.html', 
   styleUrls: ['./register.css']  
 })
-export class RegisterComponent {
-  registerData = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '' 
-  };
-
+export class RegisterComponent implements OnInit {
+  registerData = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
+  collagePosters: string[] = [];
   successMessage: string | null = null;
   errorMessage: string | null = null;
   passwordErrorMessage: string | null = null;
 
-  private backendUrl = 'http://localhost:8080/api/auth/register';
+  constructor(private http: HttpClient, private router: Router, private movieService: MovieService) {}
 
-  constructor(private http: HttpClient, private router: Router) {}
+  ngOnInit(): void {
+    // Încărcăm pozele pentru fundal cu logică de umplere
+    this.movieService.getAllMovies().subscribe(data => {
+      let posters = data.map(m => m.posterUrl).filter(u => !!u);
+      
+      if (posters.length > 0) {
+        while (posters.length < 20) {
+          posters = [...posters, ...posters];
+        }
+      }
+      this.collagePosters = posters.sort(() => 0.5 - Math.random()).slice(0, 25);
+    });
+  }
 
   onSubmit() {
-    this.successMessage = null;
-    this.errorMessage = null;
     this.passwordErrorMessage = null;
-
     if (this.registerData.password !== this.registerData.confirmPassword) {
       this.passwordErrorMessage = 'Passwords do not match!';
-      return; 
+      return;
     }
-    const dataToSend = {
-      firstName: this.registerData.firstName,
-      lastName: this.registerData.lastName,
-      email: this.registerData.email,
-      password: this.registerData.password
-    };
-
-    this.http.post(this.backendUrl, dataToSend, { responseType: 'text' })
-      .subscribe({
-        next: (response) => {
-          this.successMessage = 'User registered successfully!'; 
-          
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
-        },
-        error: (err: HttpErrorResponse) => {
-          if (err.status === 409) {
-            this.errorMessage = 'Email address is already in use!'; 
-          } else {
-            this.errorMessage = 'An error occurred during registration. Please try again.';
-          }
-          console.error('Error during registration:', err);
-        }
-      });
+    this.http.post('http://localhost:8080/api/auth/register', this.registerData, { responseType: 'text' }).subscribe({
+      next: () => {
+        this.successMessage = 'User registered successfully!';
+        setTimeout(() => this.router.navigate(['/login']), 2000);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.errorMessage = err.status === 409 ? 'Email already in use!' : 'Registration failed.';
+      }
+    });
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']);
-  }
+  goToLogin() { this.router.navigate(['/login']); }
 }

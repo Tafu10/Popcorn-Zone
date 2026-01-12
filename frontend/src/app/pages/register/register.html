@@ -1,52 +1,32 @@
 <div class="hero-container">
+  <div class="background-collage">
+    <div class="collage-grid"><img *ngFor="let url of collagePosters" [src]="url"></div>
+    <div class="collage-overlay"></div>
+  </div>
+
   <div class="content-box">
-    
     <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
       <h2 class="text-3d">PopcornZone Registration</h2>
-
       <div class="name-group">
-        <div class="form-group">
-          <label for="firstName">First Name:</label>
-          <input type="text" id="firstName" name="firstName" [(ngModel)]="registerData.firstName" required />
-        </div>
-        <div class="form-group">
-          <label for="lastName">Last Name:</label>
-          <input type="text" id="lastName" name="lastName" [(ngModel)]="registerData.lastName" required />
-        </div>
+        <div class="form-group"><label>First Name:</label><input type="text" name="firstName" [(ngModel)]="registerData.firstName" required></div>
+        <div class="form-group"><label>Last Name:</label><input type="text" name="lastName" [(ngModel)]="registerData.lastName" required></div>
       </div>
-
+      <div class="form-group"><label>Email:</label><input type="email" name="email" [(ngModel)]="registerData.email" required email></div>
       <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" [(ngModel)]="registerData.email" required email />
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" [(ngModel)]="registerData.password" #passwordInput="ngModel" required minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$" />
+        <label>Password:</label>
+        <input type="password" name="password" [(ngModel)]="registerData.password" #passwordInput="ngModel" required minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$">
         <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="validation-error">
-          <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.</div>
-          <div *ngIf="passwordInput.errors?.['pattern']">Must contain one uppercase, one lowercase, and one number.</div>
+          <small *ngIf="passwordInput.errors?.['minlength']">Min 8 characters.</small>
+          <small *ngIf="passwordInput.errors?.['pattern']">Must have uppercase, lowercase and number.</small>
         </div>
       </div>
-
       <div class="form-group">
-        <label for="confirmPassword">Confirm Password:</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="registerData.confirmPassword" #confirmPasswordInput="ngModel" required />
-        <div *ngIf="registerData.password !== registerData.confirmPassword && (confirmPasswordInput.dirty || confirmPasswordInput.touched)" class="validation-error">
-          Passwords do not match.
-        </div>
+        <label>Confirm:</label><input type="password" name="confirmPassword" [(ngModel)]="registerData.confirmPassword" required>
       </div>
-
       <button type="submit" [disabled]="!registerForm.form.valid || registerData.password !== registerData.confirmPassword">Register</button>
-
-      <div *ngIf="passwordErrorMessage" class="message error">{{ passwordErrorMessage }}</div>
       <div *ngIf="successMessage" class="message success">{{ successMessage }}</div>
-      <div *ngIf="errorMessage && !passwordErrorMessage" class="message error">{{ errorMessage }}</div>
-
-      <div class="switch-link">
-        Already have an account? <a (click)="goToLogin()">Log in</a>
-      </div>
+      <div *ngIf="errorMessage" class="message error">{{ errorMessage }}</div>
+      <div class="switch-link">Already a member? <a (click)="goToLogin()">Log in</a></div>
     </form>
-    
   </div>
 </div>

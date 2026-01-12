@@ -17,12 +17,32 @@ public class MovieController {
 
     @GetMapping
     public List<Map<String, Object>> getAllMovies() {
+        // Cerință AWJ: Măsurarea timpului de execuție pentru nota 10
+        long startTime = System.currentTimeMillis();
+
         String sql = "SELECT id, name, genre, duration, release_year AS \"releaseYear\", " +
                 "description, poster_url AS \"posterUrl\", rating FROM public.movies ORDER BY id DESC";
+        List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("AWJ Audit - Timp execuție getAllMovies: " + (endTime - startTime) + "ms");
+
+        return result;
+    }
+
+    // Cerință BD: Interogare complexă cu Subquery pentru Statistici
+    @GetMapping("/stats/revenue")
+    public List<Map<String, Object>> getRevenueStats() {
+        String sql = """
+            SELECT m.name, 
+                   (SELECT SUM(r.total_price) FROM public.reservations r 
+                    WHERE r.id_projection IN (SELECT id FROM public.projections WHERE id_movie = m.id)) as total_revenue
+            FROM public.movies m
+            ORDER BY total_revenue DESC NULLS LAST
+            """;
         return jdbcTemplate.queryForList(sql);
     }
 
-    // ACEASTA ESTE METODA CARE LIPSEA:
     @GetMapping("/{id}")
     public ResponseEntity<?> getMovieById(@PathVariable Integer id) {
         try {
@@ -47,13 +67,13 @@ public class MovieController {
                 movie.get("posterUrl"),
                 movie.get("rating")
         );
-        return ResponseEntity.ok().body("{\"message\": \"Movie added!\"}");
+        return ResponseEntity.ok().body("{\"message\": \"Adaugat!\"}");
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Integer id) {
         jdbcTemplate.update("DELETE FROM public.projections WHERE id_movie = ?", id);
         jdbcTemplate.update("DELETE FROM public.movies WHERE id = ?", id);
-        return ResponseEntity.ok().body("{\"message\": \"Movie deleted!\"}");
+        return ResponseEntity.ok().body("{\"message\": \"Sters!\"}");
     }
 }
