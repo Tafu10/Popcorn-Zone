@@ -21,6 +21,7 @@ export class AdminMoviesComponent implements OnInit {
   movies: any[] = [];
   halls: any[] = [];
   isAdmin = false;
+  editingProjectionId: number | null = null;
   
   inputTitle = ''; inputYear = 2026; inputGenre = ''; inputPoster = '';
   inputDuration = 120; inputRating = 7.0; inputDescription = ''; 
@@ -83,27 +84,32 @@ export class AdminMoviesComponent implements OnInit {
 
   onAddProjection(movie: any) {
     if (!movie.draftDate || !movie.draftTime || !movie.draftHallId) {
-      alert("Please select Date, Time, and Hall for this specific movie!");
+      alert("Please select Date, Time, and Hall!");
       return;
     }
-
-    const payload = { 
-      movieId: movie.id, 
-      hallId: movie.draftHallId, 
-      date: movie.draftDate, 
-      time: movie.draftTime 
-    };
-
+    const payload = { movieId: movie.id, hallId: movie.draftHallId, date: movie.draftDate, time: movie.draftTime };
     this.movieService.addProjection(payload).subscribe({
-      next: () => { 
-        alert("Showtime added successfully!"); 
-        this.loadMovies(); 
+      next: () => { alert("Showtime added!"); this.loadMovies(); },
+      error: (err) => alert(typeof err.error === 'string' ? err.error : "Conflict!")
+    });
+  }
+
+  onEditProjection(p: any) {
+    this.editingProjectionId = p.id;
+    p.editDate = p.date;
+    p.editTime = p.time;
+    p.editHallId = p.id_hall;
+  }
+
+  onUpdateProjection(p: any) {
+    const payload = { hallId: p.editHallId, date: p.editDate, time: p.editTime };
+    this.movieService.updateProjection(p.id, payload).subscribe({
+      next: () => {
+        alert("Showtime updated!");
+        this.editingProjectionId = null;
+        this.loadMovies();
       },
-      error: (err) => {
-        console.error("Conflict:", err);
-        const errorMessage = (typeof err.error === 'string') ? err.error : "Conflict: The hall is occupied!";
-        alert(errorMessage); 
-      }
+      error: (err) => alert(typeof err.error === 'string' ? err.error : "Update failed!")
     });
   }
 

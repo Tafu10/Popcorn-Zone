@@ -24,7 +24,7 @@ public class ProjectionController {
     @GetMapping("/{movieId}")
     public List<Map<String, Object>> getProjectionsByMovie(@PathVariable int movieId) {
         String sql = """
-            SELECT p.id, p.date, p.time, p.projection_type, 
+            SELECT p.id, p.date, p.time, p.projection_type, p.id_hall,
                    h.hall_nr, h.hall_type, l.city 
             FROM public.projections p
             JOIN public.halls h ON p.id_hall = h.id
@@ -58,7 +58,6 @@ public class ProjectionController {
             Integer duration = jdbcTemplate.queryForObject(
                     "SELECT duration FROM public.movies WHERE id = ?", Integer.class, movieId);
 
-            // Verificam daca noua proiectie se suprapune cu una existenta in aceeasi sala
             String overlapSql = """
                 SELECT COUNT(*) FROM public.projections p
                 JOIN public.movies m ON p.id_movie = m.id
@@ -76,10 +75,9 @@ public class ProjectionController {
 
             if (conflicts != null && conflicts > 0) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body("Conflict: The hall is occupied or there is not enough time between screenings (cleaning break included)!");
+                        .body("Conflict: The hall is occupied or there is not enough time between screenings!");
             }
 
-            // Atribuim automat tipul de proiectie bazat pe configuratia salii
             String hallType = jdbcTemplate.queryForObject("SELECT hall_type FROM public.halls WHERE id = ?", String.class, hallId);
             String determinedType = "IMAX".equalsIgnoreCase(hallType) ? "IMAX" : ("VIP".equalsIgnoreCase(hallType) ? "3D" : "2D");
 
@@ -87,7 +85,47 @@ public class ProjectionController {
             jdbcTemplate.update(insertSql, movieId, hallId, date, startTime, determinedType);
 
             return ResponseEntity.ok().body("{\"message\": \"Showtime added successfully!\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Server Error: " + e.getMessage());
+        }
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProjection(@PathVariable Integer id, @RequestBody Map<String, Object> payload) {
+        try {
+            Integer hallId = ((Number) payload.get("hallId")).intValue();
+            String date = (String) payload.get("date");
+            String startTime = (String) payload.get("time");
+
+            Integer movieId = jdbcTemplate.queryForObject("SELECT id_movie FROM public.projections WHERE id = ?", Integer.class, id);
+            Integer duration = jdbcTemplate.queryForObject("SELECT duration FROM public.movies WHERE id = ?", Integer.class, movieId);
+
+            String overlapSql = """
+                SELECT COUNT(*) FROM public.projections p
+                JOIN public.movies m ON p.id_movie = m.id
+                WHERE p.id_hall = ? 
+                AND p.date = ?::date
+                AND p.id <> ?
+                AND (
+                    (?::time, (?::time + (? || ' minutes')::interval + '15 minutes'::interval)) 
+                    OVERLAPS 
+                    (p.time, (p.time + (m.duration || ' minutes')::interval + '15 minutes'::interval))
+                )
+            """;
+
+            Integer conflicts = jdbcTemplate.queryForObject(overlapSql, Integer.class, hallId, date, id, startTime, startTime, duration);
+
+            if (conflicts != null && conflicts > 0) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: The hall is occupied!");
+            }
+
+            String hallType = jdbcTemplate.queryForObject("SELECT hall_type FROM public.halls WHERE id = ?", String.class, hallId);
+            String determinedType = "IMAX".equalsIgnoreCase(hallType) ? "IMAX" : ("VIP".equalsIgnoreCase(hallType) ? "3D" : "2D");
+
+            String updateSql = "UPDATE public.projections SET id_hall = ?, date = ?::date, time = ?::time, projection_type = ? WHERE id = ?";
+            jdbcTemplate.update(updateSql, hallId, date, startTime, determinedType, id);
+
+            return ResponseEntity.ok().body("{\"message\": \"Showtime updated!\"}");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Server Error: " + e.getMessage());
         }

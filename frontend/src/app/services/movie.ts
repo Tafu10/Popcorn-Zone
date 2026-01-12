@@ -64,6 +64,10 @@ export class MovieService {
     return this.http.post(`${this.apiUrl}/projections`, payload, { withCredentials: true });
   }
 
+  updateProjection(id: number, payload: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/projections/${id}`, payload, { withCredentials: true });
+  }
+
   deleteProjection(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/projections/${id}`, { withCredentials: true });
   }

@@ -44,19 +44,30 @@
           
           <div class="current-slots">
             <div *ngFor="let p of movie.projections" class="slot-badge">
-              <div class="slot-content">
+              <div *ngIf="editingProjectionId !== p.id" class="slot-content">
                 <span class="slot-date">{{ p.date }}</span>
                 <span class="slot-time">{{ p.time }}</span>
                 <span class="divider">|</span>
                 <span class="slot-hall">H{{ p.hall_nr }}</span>
                 <span class="format-tag" [ngClass]="p.projection_type">{{ p.projection_type }}</span>
                 <span class="slot-city">{{ p.city }}</span>
+                <button (click)="onEditProjection(p)" class="btn-action-small">✏️</button>
+                <button (click)="onDeleteProjection(p.id)" class="btn-delete-slot">×</button>
               </div>
-              <button (click)="onDeleteProjection(p.id)" class="btn-delete-slot">×</button>
+
+              <div *ngIf="editingProjectionId === p.id" class="edit-slot-row">
+                <input type="date" [(ngModel)]="p.editDate" class="mini-input">
+                <input type="time" [(ngModel)]="p.editTime" class="mini-input">
+                <select [(ngModel)]="p.editHallId" class="mini-input">
+                  <option *ngFor="let h of halls" [ngValue]="h.id">H{{h.hall_nr}} - {{h.city}}</option>
+                </select>
+                <button (click)="onUpdateProjection(p)" class="btn-save-small">OK</button>
+                <button (click)="editingProjectionId = null" class="btn-cancel-small">Cancel</button>
+              </div>
             </div>
           </div>   
 
-          <div class="add-slot-form">
+          <div class="add-slot-form" *ngIf="!editingProjectionId">
             <input type="date" [(ngModel)]="movie.draftDate" class="mini-input">
             <input type="time" [(ngModel)]="movie.draftTime" class="mini-input">
             <select [(ngModel)]="movie.draftHallId" class="mini-input select-hall">
