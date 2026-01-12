@@ -1,3 +1,8 @@
+/** * Clasa pentru configurarea securitatii Spring Security, definirea metodelor de criptare si a politicilor CORS.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.config;
 
 import org.springframework.context.annotation.Bean;
@@ -17,7 +22,6 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // 1. Repară eroarea "No qualifying bean of type PasswordEncoder"
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -29,7 +33,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        // Adaugă "/api/reservations/**" în lista de permitAll pentru testare
                         .requestMatchers("/api/auth/**", "/api/movies/**", "/api/projections/**", "/api/halls/**", "/api/reservations/**").permitAll()
                         .anyRequest().authenticated()
                 );

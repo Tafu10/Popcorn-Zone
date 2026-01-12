@@ -1,3 +1,8 @@
+/** * Clasa entitate care reprezinta cinematografe, continand detalii despre adresa si orasul in care acestea se afla.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.entity;
 
 import jakarta.persistence.*;

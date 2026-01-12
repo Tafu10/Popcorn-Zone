@@ -1,3 +1,9 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Componenta logica pentru pagina de administrare a filmelor.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
@@ -12,11 +18,10 @@ import { AuthService } from '../../services/auth';
   styleUrls: ['./admin-movies.css']
 })
 export class AdminMoviesComponent implements OnInit {
-  movies: any[] = []; // Folosim any pentru a permite proprietățile draft
+  movies: any[] = [];
   halls: any[] = [];
   isAdmin = false;
   
-  // Formular adăugare film nou (global)
   inputTitle = ''; inputYear = 2026; inputGenre = ''; inputPoster = '';
   inputDuration = 120; inputRating = 7.0; inputDescription = ''; 
 
@@ -40,7 +45,6 @@ export class AdminMoviesComponent implements OnInit {
   loadMovies() {
     this.movieService.getAllMovies().subscribe({
       next: (data: Movie[]) => {
-        // Mapăm filmele și le adăugăm câmpuri locale pentru input-uri
         this.movies = data.map(movie => ({
           ...movie,
           draftDate: '',
@@ -48,7 +52,6 @@ export class AdminMoviesComponent implements OnInit {
           draftHallId: null
         }));
 
-        // Încărcăm proiecțiile pentru fiecare film
         this.movies.forEach(movie => {
           if (movie.id) {
             this.movieService.getProjections(movie.id).subscribe(projs => {

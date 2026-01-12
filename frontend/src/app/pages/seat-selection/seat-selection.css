@@ -1,3 +1,8 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Definitii de stil pentru header si responsivitate.
+ */
 .selection-container {
   max-width: 800px;
   margin: 40px auto;
@@ -9,7 +14,6 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* --- SCREEN --- */
 .screen-container { margin-bottom: 50px; }
 .screen-line {
   height: 4px; background: #444; width: 80%;
@@ -17,7 +21,6 @@
 }
 .screen-text { color: #888; letter-spacing: 10px; font-size: 0.8rem; }
 
-/* --- SEATS --- */
 .seats-grid {
   display: grid;
   grid-template-columns: repeat(10, 35px);
@@ -37,7 +40,6 @@
 .seat.occupied { background: #e50914 !important; color: white; cursor: not-allowed; border: none; }
 .seat.selected { background: #28a745 !important; color: white; border: 1px solid #fff; transform: scale(1.1); }
 
-/* --- LEGENDA (FIXATĂ) --- */
 .legend-container {
   display: flex;
   justify-content: center;
@@ -58,7 +60,7 @@
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  display: block; /* Forțează randarea dimensiunilor */
+  display: block;
 }
 
 .box.free { background: #333; border: 1px solid #444; }
@@ -70,7 +72,6 @@
   color: #ccc;
 }
 
-/* --- FOOTER --- */
 .booking-footer {
   margin-top: 20px;
   border-top: 2px solid #222;
@@ -91,7 +92,6 @@
 }
 .confirm-btn:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }
 
-/* --- TICKET SELECTOR --- */
 .counter-box { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 30px 0; }
 .counter-box button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid white; background: none; color: white; font-size: 1.5rem; cursor: pointer; }
 .ticket-count { font-size: 2rem; font-weight: bold; }

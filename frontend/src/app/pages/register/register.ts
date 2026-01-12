@@ -1,5 +1,11 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Componenta logica pentru pagina de register a aplicatiei.
+ */
+
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,17 +20,22 @@ import { MovieService } from '../../services/movie';
 })
 export class RegisterComponent implements OnInit {
   registerData = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
+  
   collagePosters: string[] = [];
+  
   successMessage: string | null = null;
   errorMessage: string | null = null;
   passwordErrorMessage: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router, private movieService: MovieService) {}
+  constructor(
+    private http: HttpClient, 
+    private router: Router, 
+    private movieService: MovieService
+  ) {}
 
   ngOnInit(): void {
-    // Încărcăm pozele pentru fundal cu logică de umplere
     this.movieService.getAllMovies().subscribe(data => {
-      let posters = data.map(m => m.posterUrl).filter(u => !!u);
+      let posters = data.map((m: any) => m.posterUrl || m.poster_url).filter(u => !!u);
       
       if (posters.length > 0) {
         while (posters.length < 20) {
@@ -37,20 +48,24 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.passwordErrorMessage = null;
+    
     if (this.registerData.password !== this.registerData.confirmPassword) {
       this.passwordErrorMessage = 'Passwords do not match!';
       return;
     }
+
     this.http.post('http://localhost:8080/api/auth/register', this.registerData, { responseType: 'text' }).subscribe({
       next: () => {
         this.successMessage = 'User registered successfully!';
         setTimeout(() => this.router.navigate(['/login']), 2000);
       },
-      error: (err: HttpErrorResponse) => {
+      error: (err) => {
         this.errorMessage = err.status === 409 ? 'Email already in use!' : 'Registration failed.';
       }
     });
   }
 
-  goToLogin() { this.router.navigate(['/login']); }
+  goToLogin() { 
+    this.router.navigate(['/login']); 
+  }
 }

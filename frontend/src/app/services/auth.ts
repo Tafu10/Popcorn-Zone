@@ -1,3 +1,9 @@
+/**
+ * Serviciu pentru gestionarea starii de autentificare a utilizatorului.
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -6,28 +12,26 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   
-  // 1. Funcție ajutătoare: Încearcă să citească userul salvat din browser
+  // Incearca sa citeasca utilizatorul salvat din memoria browserului
   private getSavedUser() {
     const saved = localStorage.getItem('currentUser');
     return saved ? JSON.parse(saved) : null;
   }
 
-  // 2. IMPORTANT: Inițializăm BehaviorSubject cu ce găsim în LocalStorage
-  // (Înainte era "new BehaviorSubject<any>(null)", acum verificăm memoria mai întâi)
+  // Initializam starea cu datele din LocalStorage
   private currentUserSubject = new BehaviorSubject<any>(this.getSavedUser());
-  
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() { }
 
   public login(user: any) {
-    // 3. La login, salvăm userul în LocalStorage ("memoria permanentă")
+    // Salvam userul pentru a ramane logat si dupa refresh
     localStorage.setItem('currentUser', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
 
   public logout() {
-    // 4. La logout, îl ștergem din LocalStorage
+    // Stergem datele la deconectare
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null); 
   }

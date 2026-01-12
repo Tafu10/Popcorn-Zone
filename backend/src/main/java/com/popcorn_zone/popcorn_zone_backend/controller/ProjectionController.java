@@ -1,3 +1,8 @@
+/** * Clasa pentru gestionarea programului de proiectii, incluzand verificari pentru evitarea suprapunerii filmelor in aceeasi sala.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +55,10 @@ public class ProjectionController {
             String date = (String) payload.get("date");
             String startTime = (String) payload.get("time");
 
-            // Get current movie duration for interval calculation
             Integer duration = jdbcTemplate.queryForObject(
                     "SELECT duration FROM public.movies WHERE id = ?", Integer.class, movieId);
 
-            // SMART OVERLAP CHECK: (New_Start < Existing_End) AND (New_End > Existing_Start)
+            // Verificam daca noua proiectie se suprapune cu una existenta in aceeasi sala
             String overlapSql = """
                 SELECT COUNT(*) FROM public.projections p
                 JOIN public.movies m ON p.id_movie = m.id
@@ -75,7 +79,7 @@ public class ProjectionController {
                         .body("Conflict: The hall is occupied or there is not enough time between screenings (cleaning break included)!");
             }
 
-            // Determine type automatically from hall table
+            // Atribuim automat tipul de proiectie bazat pe configuratia salii
             String hallType = jdbcTemplate.queryForObject("SELECT hall_type FROM public.halls WHERE id = ?", String.class, hallId);
             String determinedType = "IMAX".equalsIgnoreCase(hallType) ? "IMAX" : ("VIP".equalsIgnoreCase(hallType) ? "3D" : "2D");
 

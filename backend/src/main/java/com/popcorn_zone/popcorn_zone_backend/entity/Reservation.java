@@ -1,3 +1,8 @@
+/** * Entitate care centralizeaza procesul de rezervare, legand utilizatorul de o proiectie specifica si continand detaliile de plata.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.entity;
 
 import jakarta.persistence.*;
@@ -13,17 +18,14 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // Cheia Străină către User (N:1)
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
-    // Cheia Străină către Projection (N:1)
     @ManyToOne
     @JoinColumn(name = "id_projection", nullable = false)
     private Projection projection;
 
-    // Cheia Străină către Location (N:1)
     @ManyToOne
     @JoinColumn(name = "id_location", nullable = false)
     private Location location;
@@ -37,8 +39,7 @@ public class Reservation {
     @Column(name = "total_price", nullable = false)
     private Float totalPrice;
 
-    // Relație 1:N cu Tickets
-    // Aceasta este o listă de bilete atașate acestei rezervări.
+    // Lista de bilete asociate acestei rezervari; stergerea rezervarii va sterge si biletele (cascade)
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 }

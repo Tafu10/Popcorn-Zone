@@ -1,3 +1,8 @@
+/** * Clasa pentru gestionarea colectiei de filme, incluzand operatii de adaugare, stergere si generarea de statistici de venituri.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +22,7 @@ public class MovieController {
 
     @GetMapping
     public List<Map<String, Object>> getAllMovies() {
-        // Cerință AWJ: Măsurarea timpului de execuție pentru nota 10
+        // Monitorizam timpul de executie
         long startTime = System.currentTimeMillis();
 
         String sql = "SELECT id, name, genre, duration, release_year AS \"releaseYear\", " +
@@ -25,14 +30,14 @@ public class MovieController {
         List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
 
         long endTime = System.currentTimeMillis();
-        System.out.println("AWJ Audit - Timp execuție getAllMovies: " + (endTime - startTime) + "ms");
+        System.out.println("AWJ Audit - Timp executie getAllMovies: " + (endTime - startTime) + "ms");
 
         return result;
     }
 
-    // Cerință BD: Interogare complexă cu Subquery pentru Statistici
     @GetMapping("/stats/revenue")
     public List<Map<String, Object>> getRevenueStats() {
+        // Calculam veniturile generate de fiecare film
         String sql = """
             SELECT m.name, 
                    (SELECT SUM(r.total_price) FROM public.reservations r 
@@ -72,6 +77,7 @@ public class MovieController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMovie(@PathVariable Integer id) {
+        // Stergem mai intai proiectiile asociate
         jdbcTemplate.update("DELETE FROM public.projections WHERE id_movie = ?", id);
         jdbcTemplate.update("DELETE FROM public.movies WHERE id = ?", id);
         return ResponseEntity.ok().body("{\"message\": \"Sters!\"}");

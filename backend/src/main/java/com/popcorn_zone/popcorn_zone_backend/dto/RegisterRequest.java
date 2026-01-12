@@ -1,21 +1,25 @@
+/** * Clasa de tip DTO folosita pentru a capta datele de inregistrare trimise de utilizator, incluzand validari de securitate si format.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.dto;
 
-// Importăm adnotările de validare
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
 import lombok.Data;
 
 @Data
 public class RegisterRequest {
 
-    // @NotBlank se asigură că textul nu este nul și nu este format doar din spații
+    // Validare pentru a ne asigura ca email-ul are un format corect si nu este gol
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email format")
     private String email;
 
+    // Validare pentru o parola buna
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 8, message = "Password must be at least 8 characters long")
     @Pattern(

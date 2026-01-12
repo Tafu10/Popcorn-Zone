@@ -1,3 +1,9 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Componenta logica pentru bara de navigare a aplicatiei.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovieService, Movie } from '../../services/movie';
@@ -23,17 +29,14 @@ export class HomeComponent implements OnInit {
     this.movieService.getAllMovies().subscribe(data => {
       this.movies = data;
       
-      // Extragem URL-urile posterelor valide
-      let posters = data.map(m => m.posterUrl).filter(url => !!url);
+      let posters = data.map((m: any) => m.posterUrl || m.poster_url).filter(url => !!url);
       
-      // LOGICĂ UMPLERE COLAJ: Dacă sunt puține filme, duplicăm lista până avem minim 20 de imagini
       if (posters.length > 0) {
         while (posters.length < 20) {
           posters = [...posters, ...posters];
         }
       }
       
-      // Amestecăm posterele și tăiem primele 25 pentru un aspect uniform
       this.collagePosters = posters.sort(() => 0.5 - Math.random()).slice(0, 25);
     });
   }

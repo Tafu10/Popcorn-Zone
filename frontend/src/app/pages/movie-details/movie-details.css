@@ -1,3 +1,8 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Definitii de stil pentru pagina de detalii film si responsivitate.
+ */
 .details-container {
   position: relative;
   min-height: calc(100vh - 80px);

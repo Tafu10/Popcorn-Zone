@@ -1,3 +1,9 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Componenta logica pentru bara de navigare a aplicatiei.
+ */
+
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
@@ -13,7 +19,7 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
   currentUser$: Observable<any>;
-  isMenuOpen = false; // Starea meniului burger
+  isMenuOpen = false;
 
   constructor(public authService: AuthService, private router: Router) {
     this.currentUser$ = this.authService.currentUser$;

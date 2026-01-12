@@ -1,12 +1,14 @@
+/** * Repository pentru gestionarea colectiei de filme, permitand accesul la datele salvate in baza de date PostgreSQL.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.repository;
 
 import com.popcorn_zone.popcorn_zone_backend.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- * Repository pentru entitatea Movie.
- */
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    // Nu este nevoie de cod suplimentar aici pentru moment.
-    // Avem deja automat: save(), findById(), findAll(), delete(), etc.
+    // Metodele standard CRUD sunt mostenite automat de la JpaRepository
+    // am scris eu sql nativ asa ca nu am adaugat nimic aici
 }

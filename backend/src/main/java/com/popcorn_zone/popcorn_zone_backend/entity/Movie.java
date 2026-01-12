@@ -1,3 +1,8 @@
+/** * Entitate care stocheaza informatiile descriptive ale filmelor din baza de date, inclusiv genul, durata si link-ul catre poster.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.entity;
 
 import jakarta.persistence.*;
@@ -22,7 +27,6 @@ public class Movie {
 
     private Float rating;
 
-    // Câmpurile noi care lipseau:
     @Column(name = "release_year")
     private Integer releaseYear;
 

@@ -1,4 +1,9 @@
-/* RESET GLOBAL */
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Stiluri globale si configurarea fundalului cinematic
+ */
+
 * {
     box-sizing: border-box;
 }
@@ -8,42 +13,39 @@ html, body {
     padding: 0;
     width: 100%;
     min-height: 100%;
-    background-color: #111; 
-    /* IMPORTANT: FĂRĂ overflow aici */
     font-family: 'Roboto', sans-serif;
+    padding-top: 80px; 
+    background-color: transparent; 
 }
 
-/* Aplicăm overflow-x aici pentru a nu bloca 'sticky' */
 app-root {
     display: block;
-    overflow-x: hidden;
     width: 100%;
 }
 
-/* Stiluri pentru Colajul Cinematic */
 .background-collage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: fixed; 
+    top: -2%;
+    left: -2%;
+    width: 104vw; 
+    height: 104vh;
     overflow: hidden;
-    z-index: 1;
+    z-index: -1; 
+    background-color: #000;
 }
 
 .collage-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 0;
     width: 100%;
     height: 100%;
     filter: blur(5px) brightness(0.25);
-    transform: scale(1.1);
 }
 
 .collage-grid img {
     width: 100%;
-    height: 300px;
+    height: 350px;
     object-fit: cover;
 }
 
@@ -53,5 +55,5 @@ app-root {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, #111 100%);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, #000 100%);
 }

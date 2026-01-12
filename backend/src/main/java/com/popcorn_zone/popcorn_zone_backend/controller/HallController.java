@@ -1,3 +1,8 @@
+/** * Clasa pentru gestionarea salilor de cinema si returnarea informatiilor despre acestea catre interfata de administrare.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +21,7 @@ public class HallController {
 
     @GetMapping
     public List<Map<String, Object>> getAllHalls() {
-        // JOIN între săli și locații pentru a vedea orașul în Admin
+        // Extragem informatiile despre sali impreuna cu orasul in care se afla locatia
         String sql = """
             SELECT h.id, h.hall_nr, h.hall_type, l.city 
             FROM public.halls h 

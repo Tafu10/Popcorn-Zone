@@ -1,4 +1,8 @@
-/* --- FIX FUNDAL ALB PENTRU ADMIN --- */
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Definitii de stil pentru pagina adminului si responsivitate.
+ */
 :host {
     display: block;
     background-color: white !important;
@@ -11,12 +15,9 @@
   margin: 0 auto;
   padding: 30px;
   font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: white; /* Asigurăm fundalul alb */
+  background-color: white;
 }
 
-/* --- RESTUL CODULUI TĂU RĂMÂNE IDENTIC --- */
-
-/* Header */
 .header-section {
   display: flex;
   justify-content: space-between;
@@ -35,7 +36,6 @@
   font-size: 0.8rem;
 }
 
-/* Add Movie Form */
 .add-form-container {
   background-color: #f8f9fa;
   padding: 20px;
@@ -66,7 +66,6 @@
   font-weight: bold;
 }
 
-/* Movie Card */
 .movie-card {
   display: flex;
   background: white;

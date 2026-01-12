@@ -1,12 +1,12 @@
 <div class="home-container">
-  <div class="hero">
-    <div class="background-collage">
-      <div class="collage-grid">
-        <img *ngFor="let url of collagePosters" [src]="url">
-      </div>
-      <div class="collage-overlay"></div>
+  <div class="background-collage">
+    <div class="collage-grid">
+      <img *ngFor="let url of collagePosters" [src]="url">
     </div>
+    <div class="collage-overlay"></div>
+  </div>
 
+  <div class="hero">
     <div class="hero-content">
       <h1 class="hero-title text-3d">Experience Cinema Like Never Before</h1>
       <p class="hero-subtitle">Book your favorite movies in the best halls across the country.</p>
@@ -43,17 +43,19 @@
 
         <div class="card-content">
           <h3 class="movie-title">{{ movie.name }}</h3>
-          <div class="movie-info">
-            <span class="genre-text">{{ movie.genre }}</span>
-            <span class="year-text">• {{ movie.releaseYear }}</span>
+          
+          <div class="movie-meta">
+            <span class="genre-badge">{{ movie.genre }}</span>
+            <span class="year-text">{{ movie.releaseYear }}</span>
           </div>
-          <div class="duration-row">⏱ {{ movie.duration }} min</div>
+
+          <div class="duration-box">
+            <span class="clock-icon">⏱</span>
+            <span class="duration-text">{{ movie.duration }} min</span>
+          </div>
+
           <button class="btn-book">BUY TICKET</button>
         </div>
-      </div>
-
-      <div *ngIf="filteredMovies.length === 0" class="no-results">
-        No movies found matching "{{ searchTerm }}"
       </div>
     </div>
   </section>

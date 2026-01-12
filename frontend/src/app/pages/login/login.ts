@@ -1,5 +1,11 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Componenta logica pentru pagina de login a aplicatiei.
+ */
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,9 +22,12 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginData = { email: '', password: '' };
+  
   collagePosters: string[] = [];
+  
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  
   private backendUrl = 'http://localhost:8080/api/auth/login';
   private authSubscription: Subscription | undefined;
 
@@ -30,9 +39,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Încărcăm pozele pentru fundal cu logică de umplere
     this.movieService.getAllMovies().subscribe(data => {
-      let posters = data.map(m => m.posterUrl).filter(u => !!u);
+      let posters = data.map((m: any) => m.posterUrl || m.poster_url).filter(u => !!u);
       
       if (posters.length > 0) {
         while (posters.length < 20) {
@@ -43,11 +51,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.authSubscription = this.authService.currentUser$.subscribe(user => {
-      if (!user) { this.successMessage = null; this.errorMessage = null; }
+      if (!user) { 
+        this.successMessage = null; 
+        this.errorMessage = null; 
+      }
     });
   }
 
-  ngOnDestroy(): void { if (this.authSubscription) this.authSubscription.unsubscribe(); }
+  ngOnDestroy(): void { 
+    if (this.authSubscription) this.authSubscription.unsubscribe(); 
+  }
 
   onSubmit() {
     this.errorMessage = null;
@@ -57,11 +70,16 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: (user) => {
         this.successMessage = `Login successful! Welcome, ${user.firstName}.`;
         this.authService.login(user);
+        
         setTimeout(() => this.router.navigate([user.role === 'admin' ? '/admin-movies' : '/']), 2000);
       },
-      error: () => this.errorMessage = 'Invalid email or password.'
+      error: () => {
+        this.errorMessage = 'Invalid email or password.';
+      }
     });
   }
 
-  goToRegister() { this.router.navigate(['/register']); }
+  goToRegister() { 
+    this.router.navigate(['/register']); 
+  }
 }

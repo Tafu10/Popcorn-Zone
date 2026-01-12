@@ -1,3 +1,8 @@
+/** * Clasa entitate care defineste programul de difuzare al filmelor, incluzand data, ora si tipul proiectiei (2D, 3D, IMAX).
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.entity;
 
 import jakarta.persistence.*;
@@ -14,20 +19,19 @@ public class Projection {
     private Integer id;
 
     @Column(nullable = false)
-    private LocalDate date; // Am folosit LocalDate în loc de Datetime
+    private LocalDate date;
 
     @Column(nullable = false)
-    private LocalTime time; // Am folosit LocalTime în loc de Datetime
+    private LocalTime time;
 
     @Column(name = "projection_type", nullable = false)
     private String projectionType;
 
-    // Cheia Străină către Movie
+    // Corelarea proiectiei cu filmul respectiv din colectie
     @ManyToOne
     @JoinColumn(name = "id_movie", nullable = false)
     private Movie movie;
 
-    // Cheia Străină către Hall
     @ManyToOne
     @JoinColumn(name = "id_hall", nullable = false)
     private Hall hall;

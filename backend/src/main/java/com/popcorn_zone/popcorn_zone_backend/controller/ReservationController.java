@@ -1,3 +1,8 @@
+/** * Clasa pentru gestionarea procesului de rezervare a locurilor si emiterea biletelor, asigurand integritatea datelor.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -5,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -17,12 +21,9 @@ public class ReservationController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    /**
-     * 1. Obține toate locurile pentru o proiecție specifică.
-     * Verifică prin JOIN-uri dacă locul are deja un bilet emis pentru proiecția respectivă.
-     */
     @GetMapping("/seats/{projectionId}")
     public List<Map<String, Object>> getSeats(@PathVariable int projectionId) {
+        // Identificam locurile ocupate
         String sql = """
             SELECT s.id, s.row_nr AS "row", s.number,
                    CASE WHEN t.id IS NOT NULL THEN TRUE ELSE FALSE END AS "isOccupied"
@@ -36,10 +37,6 @@ public class ReservationController {
         return jdbcTemplate.queryForList(sql, projectionId, projectionId);
     }
 
-    /**
-     * 2. Creează o rezervare nouă.
-     * @Transactional asigură că dacă salvarea unui bilet eșuează, nicio dată nu este scrisă în DB.
-     */
     @PostMapping
     @Transactional
     public ResponseEntity<?> makeReservation(@RequestBody Map<String, Object> payload) {
@@ -50,7 +47,6 @@ public class ReservationController {
             @SuppressWarnings("unchecked")
             List<Integer> seatIds = (List<Integer>) payload.get("seatIds");
 
-            // 1. Aflăm tipul proiecției și locația
             String infoSql = """
             SELECT p.id_hall, p.projection_type, h.id_location 
             FROM public.projections p
@@ -63,20 +59,19 @@ public class ReservationController {
             Integer hallId = (Integer) projInfo.get("id_hall");
             Integer locationId = (Integer) projInfo.get("id_location");
 
-            // 2. LOGICĂ PREȚ DINAMIC
+            // Stabilim pretul biletului in mod dinamic in functie de formatul filmului
             double pricePerTicket = switch (type.trim().toUpperCase()) {
                 case "IMAX" -> 45.0;
                 case "3D" -> 35.0;
-                default -> 25.0; // Standard 2D
+                default -> 25.0;
             };
             double totalPrice = pricePerTicket * seatIds.size();
 
-            // 3. Inserare Rezervare
             String resSql = "INSERT INTO public.reservations (id_user, id_projection, id_location, nr_tickets, total_price) VALUES (?, ?, ?, ?, ?) RETURNING id";
             Integer reservationId = jdbcTemplate.queryForObject(resSql, Integer.class,
                     userId, projectionId, locationId, seatIds.size(), totalPrice);
 
-            // 4. Inserare Bilete Individuale
+            // Inregistram fiecare bilet individual in cadrul aceleiasi rezervari
             String ticketSql = "INSERT INTO public.tickets (id_reservation, id_seat, id_hall, price) VALUES (?, ?, ?, ?)";
             for (Integer seatId : seatIds) {
                 jdbcTemplate.update(ticketSql, reservationId, seatId, hallId, pricePerTicket);

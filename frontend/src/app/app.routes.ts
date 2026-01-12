@@ -1,3 +1,9 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Definirea rutelor pentru aplicatia Angular.
+ */
+
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home';
 import { LoginComponent } from './pages/login/login';

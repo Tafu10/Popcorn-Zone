@@ -1,3 +1,9 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Componenta logica pentru pagina de selectare locuri a aplicatiei.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,8 +25,7 @@ export class SeatSelectionComponent implements OnInit {
   ticketsWanted: number = 1;
   selectionStarted: boolean = false;
   
-  // Logica de preț
-  pricePerTicket: number = 25; // Default 2D
+  pricePerTicket: number = 25;
   projectionType: string = '2D';
 
   constructor(
@@ -37,16 +42,13 @@ export class SeatSelectionComponent implements OnInit {
   }
 
 loadProjectionDetails() {
-  // Apelăm o metodă nouă care aduce datele DOAR pentru proiecția curentă
   this.movieService.getProjectionById(this.projectionId).subscribe({
     next: (current) => {
       if (current) {
-        // JdbcTemplate din Backend returnează adesea cheile cu snake_case (projection_type)
         this.projectionType = current.projection_type || current.projectionType || '2D'; 
         
         console.log('Tip proiecție detectat:', this.projectionType);
 
-        // Aplicăm logica de preț în funcție de tipul real detectat
         if (this.projectionType.trim().toUpperCase() === 'IMAX') {
           this.pricePerTicket = 45;
         } else if (this.projectionType.trim().toUpperCase() === '3D') {
@@ -60,7 +62,6 @@ loadProjectionDetails() {
     },
     error: (err) => {
       console.error('Eroare la comunicarea cu serverul:', err);
-      // În caz de eroare, rămâne pe prețul default de 25
     }
   });
 }
@@ -101,7 +102,7 @@ loadProjectionDetails() {
 
     this.movieService.bookSeats(payload).subscribe({
       next: () => {
-        alert("Reservation successful! See you at the movies."); // Mesaj simplificat
+        alert("Reservation successful! See you at the movies.");
         this.router.navigate(['/home']);
       }
     });

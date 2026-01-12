@@ -1,3 +1,9 @@
+/**
+ * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ * Componenta logica pentru pagina de detalii a unui film din aplicatie.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -52,7 +58,6 @@ export class MovieDetailsComponent implements OnInit {
 
   onBuyTicket() {
     if (this.selectedProjection && this.selectedProjection.id) {
-      // Navigăm către selecția locurilor transmițând ID-ul proiecției
       this.router.navigate(['/seat-selection', this.selectedProjection.id]);
     } else {
       alert("Please select a showtime first!");

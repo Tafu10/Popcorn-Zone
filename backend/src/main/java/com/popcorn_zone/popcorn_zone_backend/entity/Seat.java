@@ -1,3 +1,8 @@
+/** * Clasa entitate pentru gestionarea locurilor disponibile in salile de cinema, definind pozitia acestora prin rand si numar.
+ * * @author Bolat Tayfun
+ * @version 12 Ianuarie 2026
+ */
+
 package com.popcorn_zone.popcorn_zone_backend.entity;
 
 import jakarta.persistence.*;
@@ -11,7 +16,7 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // Cheia Străină către Hall (N:1)
+    // Fiecare loc este asignat unei anumite sali de cinema
     @ManyToOne
     @JoinColumn(name = "id_hall", nullable = false)
     private Hall hall;
