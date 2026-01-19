@@ -79,4 +79,14 @@ export class MovieService {
   getProjectionById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/projections/single/${id}`);
   }
+
+  // --- FIX AICI: Am adaugat /movies in path ---
+  getRecommendations(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/movies/recommendations/${userId}`);
+  }
+
+  // --- FIX AICI: Am adaugat /movies in path ---
+  getTopRevenueMovies(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/movies/stats/top-revenue`);
+  }
 }

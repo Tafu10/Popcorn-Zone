@@ -1,21 +1,60 @@
 <div class="reservations-container">
-  <h2>My Reservations</h2>
+  <h2>My Tickets</h2>
+
   <div *ngIf="reservations.length === 0" class="no-data">
-    <p>You haven't made any reservations yet.</p>
+    <p>🎟️ You haven't booked any movies yet.</p>
   </div>
 
   <div class="res-card" *ngFor="let res of reservations">
-    <div class="res-header">
-      <span class="movie-name">{{ res.movieName }}</span>
-      <span class="res-type" [ngClass]="res.type">{{ res.type }}</span>
+    
+    <div class="ticket-left">
+      
+      <div class="movie-title">
+        {{ res.movieName || res.movie_name }}
+      </div>
+
+      <div class="client-row" *ngIf="currentUser">
+        <span class="client-label">Ticket Holder:</span>
+        <span class="client-name">
+            {{ currentUser.firstName || currentUser.first_name }} 
+            {{ currentUser.lastName || currentUser.last_name }}
+        </span>
+      </div>
+
+      <div class="ticket-meta">
+        <span class="meta-item">
+          📅 {{ res.date || res.projection_date }}
+        </span>
+        <span class="meta-item">
+          ⏰ {{ res.time || res.projection_time }}
+        </span>
+        <span class="meta-item">
+          📍 Hall {{ res.hall_nr }}
+        </span>
+      </div>
+
+      <div class="info-row">
+        <div class="seat-info">
+          Seats: <b>{{ res.seats || res.seat_numbers }}</b>
+        </div>
+        
+        <div class="price-tag">
+          <span class="price-label">Total Paid</span>
+          <span class="price-value">{{ res.totalPrice || res.total_price }} <small style="font-size: 1rem;">RON</small></span>
+        </div>
+      </div>
+
     </div>
-    <div class="res-info">
-      <p><strong>Date:</strong> {{ res.date }} at {{ res.time }}</p>
-      <p><strong>Location:</strong> Hall {{ res.hall_nr }}, {{ res.city }}</p>
-      <p><strong>Seats:</strong> {{ res.seats }}</p>
+
+    <div class="qr-section">
+      <qrcode 
+        [qrdata]="getQrData(res)" 
+        [width]="110" 
+        [margin]="0"
+        [errorCorrectionLevel]="'M'">
+      </qrcode>
+      <span class="scan-text">SCAN ME</span>
     </div>
-    <div class="res-footer">
-      <span>Total Paid: <strong>{{ res.totalPrice }} RON</strong></span>
-    </div>
+
   </div>
 </div>

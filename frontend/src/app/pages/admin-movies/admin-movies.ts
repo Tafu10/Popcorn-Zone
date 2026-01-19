@@ -23,6 +23,10 @@ export class AdminMoviesComponent implements OnInit {
   isAdmin = false;
   editingProjectionId: number | null = null;
   
+  // Variabile noi pentru Statistici
+  topRevenueMovies: any[] = [];
+  showStats: boolean = false;
+
   inputTitle = ''; inputYear = 2026; inputGenre = ''; inputPoster = '';
   inputDuration = 120; inputRating = 7.0; inputDescription = ''; 
 
@@ -63,6 +67,16 @@ export class AdminMoviesComponent implements OnInit {
       },
       error: (err: any) => console.error("Error loading movies:", err)
     });
+  }
+
+
+  toggleStats() {
+    this.showStats = !this.showStats;
+    if (this.showStats && this.topRevenueMovies.length === 0) {
+      this.movieService.getTopRevenueMovies().subscribe(data => {
+        this.topRevenueMovies = data;
+      });
+    }
   }
 
   onAddMovie() {

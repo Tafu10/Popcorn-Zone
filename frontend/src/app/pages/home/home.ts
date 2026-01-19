@@ -1,12 +1,13 @@
 /**
  * @author Bolat Tayfun
  * @version 12 Ianuarie 2026
- * Componenta logica pentru bara de navigare a aplicatiei.
+ * Componenta logica pentru pagina home a aplicatiei.
  */
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovieService, Movie } from '../../services/movie';
+import { AuthService } from '../../services/auth';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -20,12 +21,20 @@ import { FormsModule } from '@angular/forms';
 export class HomeComponent implements OnInit {
   movies: Movie[] = [];
   collagePosters: string[] = [];
+  
+  recommendedMovies: any[] = [];
+  currentUser: any = null;
+
   searchTerm: string = '';
   sortKey: string = 'rating';
 
-  constructor(private movieService: MovieService) {}
+  constructor(
+    private movieService: MovieService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
+    // 1. Incarcam toate filmele
     this.movieService.getAllMovies().subscribe(data => {
       this.movies = data;
       
@@ -38,6 +47,21 @@ export class HomeComponent implements OnInit {
       }
       
       this.collagePosters = posters.sort(() => 0.5 - Math.random()).slice(0, 25);
+    });
+
+    // 2. Verificam userul si aducem recomandarile
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      if (user && user.id) {
+        this.movieService.getRecommendations(user.id).subscribe({
+          next: (data) => {
+            this.recommendedMovies = data;
+          },
+          error: (err) => {
+            console.error(err);
+          }
+        });
+      }
     });
   }
 
