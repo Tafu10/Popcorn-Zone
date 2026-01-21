@@ -15,11 +15,15 @@
 
   <div class="filter-controls">
     <div class="search-box">
-      <input type="text" [(ngModel)]="searchTerm" placeholder="Search for a movie..." class="search-input">
+      <input type="text" 
+             [ngModel]="searchTerm" 
+             (ngModelChange)="onSearchChange($event)"
+             placeholder="Search for a movie..." 
+             class="search-input">
     </div>
     <div class="sort-box">
       <label>Sort by: </label>
-      <select [(ngModel)]="sortKey" class="sort-select">
+      <select [(ngModel)]="sortKey" (change)="onSortChange()" class="sort-select">
         <option value="rating">Highest Rating</option>
         <option value="name">Alphabetical (A-Z)</option>
       </select>
@@ -81,7 +85,7 @@
     </div>
 
     <div class="movies-grid">
-      <div class="movie-card" *ngFor="let movie of filteredMovies" [routerLink]="['/movie', movie.id]">
+      <div class="movie-card" *ngFor="let movie of movies" [routerLink]="['/movie', movie.id]">
         <div class="card-image-wrapper">
           <img [src]="movie.posterUrl || 'assets/images/placeholder.jpg'" alt="{{ movie.name }}">
           <div class="rating-badge">★ {{ movie.rating }}</div>

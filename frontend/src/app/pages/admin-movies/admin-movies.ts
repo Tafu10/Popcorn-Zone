@@ -69,7 +69,6 @@ export class AdminMoviesComponent implements OnInit {
     });
   }
 
-
   toggleStats() {
     this.showStats = !this.showStats;
     if (this.showStats && this.topRevenueMovies.length === 0) {
