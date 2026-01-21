@@ -146,4 +146,17 @@ public class MovieController {
         """;
         return jdbcTemplate.queryForList(sql);
     }
+    @GetMapping("/search")
+    public List<Map<String, Object>> searchMovies(@RequestParam String query) {
+        // Cautare case-insensitive (ILIKE) dupa nume sau gen
+        String sql = """
+            SELECT id, name, genre, duration, release_year AS "releaseYear", 
+                   description, poster_url AS "posterUrl", rating 
+            FROM public.movies 
+            WHERE name ILIKE ? OR genre ILIKE ?
+            ORDER BY id DESC
+        """;
+        String searchTerm = "%" + query + "%";
+        return jdbcTemplate.queryForList(sql, searchTerm, searchTerm);
+    }
 }
